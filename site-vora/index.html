@@ -1,0 +1,864 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+
+  <!-- =====================  SEO ON-PAGE  ===================== -->
+  <title>Vora — Registro de Marca no INPI em Alagoas | Análise de Viabilidade Grátis</title>
+  <meta name="description" content="Proteja sua marca antes que outro registre. A Vora é especialista em registro de marca no INPI para empresas de Alagoas. Análise de viabilidade grátis e protocolo em até 24h. Fale com um especialista." />
+  <meta name="robots" content="index, follow" />
+  <meta name="author" content="Vora Registro de Marcas" />
+  <link rel="canonical" href="https://vorapi.com.br/" />
+
+  <!-- Open Graph / redes sociais -->
+  <meta property="og:type" content="website" />
+  <meta property="og:title" content="Vora — Registro de Marca no INPI em Alagoas" />
+  <meta property="og:description" content="Sua marca sem registro é da concorrência. Análise de viabilidade grátis com quem entende o mercado alagoano." />
+  <meta property="og:locale" content="pt_BR" />
+  <meta property="og:image" content="https://www.SEUDOMINIO.com.br/og-image.jpg" /> <!-- PLACEHOLDER -->
+  <meta name="theme-color" content="#0a0a0a" />
+
+  <!-- =====================  FONTS  ===================== -->
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@300;400;500;600;700&family=JetBrains+Mono:wght@400;500;700&display=swap" rel="stylesheet" />
+
+  <!-- =====================  TAILWIND (Play CDN)  ===================== -->
+  <script src="https://cdn.tailwindcss.com"></script>
+  <script>
+    tailwind.config = {
+      theme: {
+        extend: {
+          colors: {
+            obsidian: '#0a0a0a',
+            surface: '#0c0c0c',
+            lime: '#ccff00',
+            emerald: '#10b981',
+          },
+          fontFamily: {
+            grotesk: ['"Space Grotesk"', 'sans-serif'],
+            mono: ['"JetBrains Mono"', 'monospace'],
+          },
+          borderRadius: {
+            '2.5xl': '2.5rem',
+          },
+        },
+      },
+    };
+  </script>
+
+  <!-- =====================  ESTILO CUSTOMIZADO  ===================== -->
+  <style>
+    :root { color-scheme: dark; }
+    html { scroll-behavior: smooth; }
+    body {
+      font-family: 'Space Grotesk', sans-serif;
+      background-color: #000;
+      color: #ebebeb;
+      -webkit-font-smoothing: antialiased;
+    }
+
+    /* --- Padrão de grade decorativo --- */
+    .grid-bg {
+      background-image:
+        linear-gradient(rgba(255,255,255,0.04) 1px, transparent 1px),
+        linear-gradient(90deg, rgba(255,255,255,0.04) 1px, transparent 1px);
+      background-size: 60px 60px;
+    }
+
+    /* --- Overlay de ruído (noise) para evitar o "flat dark" --- */
+    .noise::before {
+      content: '';
+      position: absolute;
+      inset: 0;
+      pointer-events: none;
+      opacity: 0.15;
+      background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='200' height='200'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.9' numOctaves='4' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)'/%3E%3C/svg%3E");
+    }
+
+    /* --- Glassmorphism --- */
+    .glass {
+      background: rgba(255, 255, 255, 0.03);
+      backdrop-filter: blur(16px);
+      -webkit-backdrop-filter: blur(16px);
+      border: 1px solid rgba(255, 255, 255, 0.1);
+    }
+
+    /* --- Esferas de brilho (glow spheres) --- */
+    .glow-sphere {
+      position: absolute;
+      border-radius: 9999px;
+      filter: blur(120px);
+      pointer-events: none;
+      z-index: 0;
+    }
+
+    /* --- Animações --- */
+    @keyframes float {
+      0%, 100% { transform: translateY(0); }
+      50% { transform: translateY(-10px); }
+    }
+    .float-anim { animation: float 6s infinite ease-in-out; }
+    .float-anim-slow { animation: float 8s infinite ease-in-out; }
+
+    @keyframes pulse-dot {
+      0%, 100% { opacity: 1; transform: scale(1); }
+      50% { opacity: 0.4; transform: scale(0.85); }
+    }
+    .pulse-dot { animation: pulse-dot 2s infinite; }
+
+    @keyframes fade-up {
+      from { opacity: 0; transform: translateY(24px); }
+      to { opacity: 1; transform: translateY(0); }
+    }
+    .reveal { opacity: 0; }
+    .reveal.in-view { animation: fade-up 0.7s cubic-bezier(0.4, 0, 0.2, 1) forwards; }
+
+    /* --- Tag de status do sistema (mono) --- */
+    .sys-tag {
+      display: inline-flex;
+      align-items: center;
+      gap: 0.5rem;
+      font-family: 'JetBrains Mono', monospace;
+      text-transform: uppercase;
+      letter-spacing: 0.2em;
+      font-size: 10px;
+    }
+
+    /* --- Botão neon --- */
+    .btn-neon {
+      background-color: #ccff00;
+      color: #000;
+      font-weight: 700;
+      border-radius: 9999px;
+      box-shadow: 0 0 30px rgba(204, 255, 0, 0.3);
+      transition: transform 0.3s cubic-bezier(0.4, 0, 0.2, 1), box-shadow 0.3s;
+    }
+    .btn-neon:hover { transform: scale(1.05); box-shadow: 0 0 45px rgba(204, 255, 0, 0.45); }
+
+    /* --- Heading gradient --- */
+    .grad-lime {
+      background: linear-gradient(120deg, #ccff00 0%, #ffffff 100%);
+      -webkit-background-clip: text;
+      background-clip: text;
+      -webkit-text-fill-color: transparent;
+    }
+
+    /* --- Scrollbar --- */
+    ::-webkit-scrollbar { width: 10px; }
+    ::-webkit-scrollbar-track { background: #000; }
+    ::-webkit-scrollbar-thumb { background: #1a1a1a; border-radius: 10px; }
+    ::-webkit-scrollbar-thumb:hover { background: #262626; }
+
+    /* --- FAQ --- */
+    .faq-item[open] .faq-icon { transform: rotate(45deg); }
+    .faq-icon { transition: transform 0.3s cubic-bezier(0.4, 0, 0.2, 1); }
+  </style>
+</head>
+
+<body class="bg-black">
+
+  <!-- =========================================================
+       SHELL FLUTUANTE — todo o site vive dentro deste container
+       ========================================================= -->
+  <div class="mx-auto max-w-[1600px] my-0 md:my-4 bg-surface md:rounded-2.5xl md:ring-1 md:ring-white/10 shadow-2xl overflow-hidden relative">
+
+    <!-- Fundo decorativo global -->
+    <div class="absolute inset-0 grid-bg opacity-60 pointer-events-none"></div>
+    <div class="glow-sphere w-[500px] h-[500px] bg-lime/20 -top-40 -left-40"></div>
+    <div class="glow-sphere w-[400px] h-[400px] bg-emerald/10 top-[60%] -right-40"></div>
+
+    <!-- =====================  NAVEGAÇÃO  ===================== -->
+    <header class="relative z-30 flex items-center justify-between px-5 md:px-10 py-5">
+      <!-- Logo -->
+      <a href="#topo" class="flex items-center gap-3">
+        <div class="w-11 h-11 rounded-xl bg-lime flex items-center justify-center">
+          <span class="text-black font-grotesk font-bold text-2xl leading-none">V</span>
+        </div>
+        <span class="font-grotesk font-semibold text-lg tracking-tight hidden sm:block">Vora</span>
+      </a>
+
+      <!-- Nav central (pill) -->
+      <nav class="hidden lg:flex items-center gap-1 glass rounded-full px-2 py-2">
+        <a href="#risco" class="px-4 py-2 rounded-full text-sm text-white/70 hover:text-white hover:bg-white/5 transition">O Risco</a>
+        <a href="#processo" class="px-4 py-2 rounded-full text-sm text-white/70 hover:text-white hover:bg-white/5 transition">Como Funciona</a>
+        <a href="#diferenciais" class="px-4 py-2 rounded-full text-sm text-white/70 hover:text-white hover:bg-white/5 transition">Diferenciais</a>
+        <a href="#faq" class="px-4 py-2 rounded-full text-sm text-white/70 hover:text-white hover:bg-white/5 transition">Dúvidas</a>
+      </nav>
+
+      <!-- Status + CTA -->
+      <div class="flex items-center gap-4">
+        <div class="sys-tag text-white/50 hidden md:flex">
+          <span class="w-1.5 h-1.5 rounded-full bg-lime pulse-dot"></span>
+          Alagoas · Online
+        </div>
+        <a href="/formulario" class="btn-neon text-sm px-5 py-2.5">Análise grátis</a>
+      </div>
+    </header>
+
+    <!-- =====================  HERO  ===================== -->
+    <section id="topo" class="relative z-10 px-5 md:px-10 pt-10 md:pt-16 pb-20">
+      <div class="grid grid-cols-1 lg:grid-cols-12 gap-10 items-center">
+
+        <!-- Esquerda (7 cols) -->
+        <div class="lg:col-span-7">
+          <div class="sys-tag text-lime mb-6">
+            <span class="w-1.5 h-1.5 rounded-full bg-lime pulse-dot"></span>
+            Registro de Marca · INPI · Alagoas
+          </div>
+
+          <h1 class="font-grotesk font-light tracking-[-0.06em] leading-[0.9] text-5xl md:text-7xl lg:text-[5.5rem]">
+            Sua marca sem registro<br />
+            <span class="italic grad-lime font-medium">é da concorrência.</span>
+          </h1>
+
+          <p class="mt-8 text-lg md:text-xl text-white/60 max-w-xl leading-relaxed">
+            No INPI, quem chega primeiro leva. Se outra empresa registrar o nome que você
+            construiu, <span class="text-white">você pode ser obrigado a trocar de marca — ou pagar para continuar usando a sua.</span>
+            A Vora garante o registro antes que isso aconteça.
+          </p>
+
+          <div class="mt-10 flex flex-col sm:flex-row gap-4">
+            <a href="/formulario" class="btn-neon text-base px-8 py-4 text-center">
+              Fazer análise de viabilidade grátis
+            </a>
+            <a href="#processo" class="glass rounded-full px-8 py-4 text-center text-white/80 hover:text-white hover:border-lime/40 transition">
+              Ver como funciona
+            </a>
+          </div>
+
+          <!-- Micro prova social -->
+          <div class="mt-10 flex items-center gap-6 text-sm text-white/40 font-mono">
+            <span>★★★★★ <span class="text-white/70">5.0</span> no Google</span>
+            <span class="hidden sm:inline">·</span>
+            <span class="hidden sm:inline">Protocolo em até <span class="text-white/70">24h</span></span>
+            <span class="hidden sm:inline">·</span>
+            <span class="hidden sm:inline">Feito em Maceió</span>
+          </div>
+        </div>
+
+        <!-- Direita (5 cols) — Mockup glass -->
+        <div class="lg:col-span-5 relative">
+          <div class="glass rounded-2.5xl p-6 relative noise overflow-hidden">
+            <!-- header do mockup -->
+            <div class="flex items-center justify-between mb-6 relative z-10">
+              <div class="sys-tag text-white/50">
+                <span class="w-1.5 h-1.5 rounded-full bg-emerald pulse-dot"></span>
+                Consulta INPI · ao vivo
+              </div>
+              <div class="flex gap-1.5">
+                <span class="w-2.5 h-2.5 rounded-full bg-white/10"></span>
+                <span class="w-2.5 h-2.5 rounded-full bg-white/10"></span>
+                <span class="w-2.5 h-2.5 rounded-full bg-lime/60"></span>
+              </div>
+            </div>
+
+            <!-- card de status -->
+            <div class="glass rounded-2xl p-5 mb-4 relative z-10 float-anim">
+              <div class="sys-tag text-white/40 mb-2">Marca pesquisada</div>
+              <div class="font-grotesk text-2xl font-medium mb-3">"Sua Marca Ltda"</div>
+              <div class="flex items-center gap-2">
+                <span class="w-2 h-2 rounded-full bg-lime pulse-dot"></span>
+                <span class="text-lime text-sm font-mono">DISPONÍVEL PARA REGISTRO</span>
+              </div>
+            </div>
+
+            <!-- mini bars -->
+            <div class="glass rounded-2xl p-5 relative z-10 float-anim-slow">
+              <div class="sys-tag text-white/40 mb-4">Viabilidade por classe</div>
+              <div class="flex items-end gap-2 h-24">
+                <div class="flex-1 bg-lime/80 rounded-t-md" style="height:80%"></div>
+                <div class="flex-1 bg-lime/50 rounded-t-md" style="height:55%"></div>
+                <div class="flex-1 bg-white/20 rounded-t-md" style="height:90%"></div>
+                <div class="flex-1 bg-lime/70 rounded-t-md" style="height:65%"></div>
+                <div class="flex-1 bg-white/15 rounded-t-md" style="height:40%"></div>
+                <div class="flex-1 bg-lime/60 rounded-t-md" style="height:75%"></div>
+              </div>
+            </div>
+
+            <!-- cursor label flutuante -->
+            <div class="absolute -bottom-4 -right-3 bg-lime text-black text-xs font-mono font-bold px-3 py-2 rounded-lg shadow-lg float-anim z-20">
+              ✦ Análise Vora
+            </div>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- =====================  BARRA DE PROVA SOCIAL  ===================== -->
+    <!-- PLACEHOLDER: substituir por números reais da Vora -->
+    <section class="relative z-10 px-5 md:px-10 py-8 border-y border-white/10">
+      <div class="grid grid-cols-2 md:grid-cols-4 gap-6 text-center">
+        <div>
+          <div class="font-grotesk text-3xl md:text-4xl font-semibold text-lime">+500</div>
+          <div class="sys-tag text-white/40 mt-2 justify-center">Marcas protegidas</div>
+        </div>
+        <div>
+          <div class="font-grotesk text-3xl md:text-4xl font-semibold">24h</div>
+          <div class="sys-tag text-white/40 mt-2 justify-center">Protocolo no INPI</div>
+        </div>
+        <div>
+          <div class="font-grotesk text-3xl md:text-4xl font-semibold">5.0★</div>
+          <div class="sys-tag text-white/40 mt-2 justify-center">Avaliação Google</div>
+        </div>
+        <div>
+          <div class="font-grotesk text-3xl md:text-4xl font-semibold text-lime">100%</div>
+          <div class="sys-tag text-white/40 mt-2 justify-center">Foco em Alagoas</div>
+        </div>
+      </div>
+    </section>
+
+    <!-- =====================  O RISCO (PAS)  ===================== -->
+    <section id="risco" class="relative z-10 px-5 md:px-10 py-24">
+      <div class="max-w-3xl mb-16 reveal">
+        <div class="sys-tag text-lime mb-5">
+          <span class="w-1.5 h-1.5 rounded-full bg-lime pulse-dot"></span>
+          O que ninguém te conta
+        </div>
+        <h2 class="font-grotesk font-light tracking-[-0.05em] leading-[0.95] text-4xl md:text-6xl">
+          Você não é dono da sua marca.<br />
+          <span class="text-white/50">Ainda.</span>
+        </h2>
+        <p class="mt-6 text-lg text-white/60 leading-relaxed">
+          Ter CNPJ, domínio e perfil no Instagram <span class="text-white">não</span> te dá direito sobre o nome.
+          No Brasil, a marca pertence a quem registra primeiro no INPI — não a quem usa há mais tempo.
+          Enquanto você adia, qualquer pessoa pode registrar o nome que você construiu.
+        </p>
+      </div>
+
+      <!-- 3 cards de agitação -->
+      <div class="grid grid-cols-1 md:grid-cols-3 gap-5">
+        <div class="glass rounded-2.5xl p-8 hover:border-lime/40 transition reveal">
+          <div class="text-lime font-mono text-sm mb-4">01 / NOTIFICAÇÃO</div>
+          <h3 class="font-grotesk text-xl font-medium mb-3">Ordem para trocar de nome</h3>
+          <p class="text-white/50 leading-relaxed">
+            Quem registra antes pode te notificar judicialmente e te obrigar a abandonar a marca —
+            depois de você já ter investido anos em reconhecimento.
+          </p>
+        </div>
+        <div class="glass rounded-2.5xl p-8 hover:border-lime/40 transition reveal">
+          <div class="text-lime font-mono text-sm mb-4">02 / PREJUÍZO</div>
+          <h3 class="font-grotesk text-xl font-medium mb-3">Refazer tudo do zero</h3>
+          <p class="text-white/50 leading-relaxed">
+            Fachada, embalagem, redes, material gráfico, Google. Trocar de marca por imposição
+            legal custa muito mais caro do que registrar hoje.
+          </p>
+        </div>
+        <div class="glass rounded-2.5xl p-8 hover:border-lime/40 transition reveal">
+          <div class="text-lime font-mono text-sm mb-4">03 / EXTORSÃO LEGAL</div>
+          <h3 class="font-grotesk text-xl font-medium mb-3">Pagar para usar o que é seu</h3>
+          <p class="text-white/50 leading-relaxed">
+            Há quem registre marcas de terceiros de propósito para depois cobrar licenciamento.
+            Sem registro, você fica refém.
+          </p>
+        </div>
+      </div>
+
+      <div class="mt-12 text-center reveal">
+        <a href="/formulario" class="btn-neon inline-block text-base px-8 py-4">
+          Descobrir se minha marca ainda está livre →
+        </a>
+      </div>
+    </section>
+
+    <!-- =====================  COMO FUNCIONA (3 PASSOS)  ===================== -->
+    <section id="processo" class="relative z-10 px-5 md:px-10 py-24">
+      <div class="max-w-3xl mb-16 reveal">
+        <div class="sys-tag text-lime mb-5">
+          <span class="w-1.5 h-1.5 rounded-full bg-lime pulse-dot"></span>
+          Simples e sem burocracia
+        </div>
+        <h2 class="font-grotesk font-light tracking-[-0.05em] leading-[0.95] text-4xl md:text-6xl">
+          Como a Vora protege<br />sua marca
+        </h2>
+        <p class="mt-6 text-lg text-white/60 leading-relaxed">
+          Você cuida do seu negócio. A gente cuida da parte técnica, dos prazos e do INPI —
+          de ponta a ponta.
+        </p>
+      </div>
+
+      <div class="grid grid-cols-1 md:grid-cols-3 gap-5">
+        <div class="glass rounded-2.5xl p-8 hover:border-lime/40 transition reveal">
+          <div class="w-14 h-14 rounded-full border border-lime/40 flex items-center justify-center font-mono text-lime text-lg mb-6">01</div>
+          <h3 class="font-grotesk text-2xl font-medium mb-3">Análise de viabilidade</h3>
+          <p class="text-white/50 leading-relaxed">
+            Pesquisamos no banco do INPI se sua marca está livre e em quais classes você deve registrar.
+            Gratuito e sem compromisso.
+          </p>
+        </div>
+        <div class="glass rounded-2.5xl p-8 hover:border-lime/40 transition reveal">
+          <div class="w-14 h-14 rounded-full border border-lime/40 flex items-center justify-center font-mono text-lime text-lg mb-6">02</div>
+          <h3 class="font-grotesk text-2xl font-medium mb-3">Protocolo em até 24h</h3>
+          <p class="text-white/50 leading-relaxed">
+            Preparamos e protocolamos o pedido corretamente — evitando os erros de classe e
+            especificação que fazem o INPI indeferir milhares de pedidos por ano.
+          </p>
+        </div>
+        <div class="glass rounded-2.5xl p-8 hover:border-lime/40 transition reveal">
+          <div class="w-14 h-14 rounded-full border border-lime/40 flex items-center justify-center font-mono text-lime text-lg mb-6">03</div>
+          <h3 class="font-grotesk text-2xl font-medium mb-3">Acompanhamento até o fim</h3>
+          <p class="text-white/50 leading-relaxed">
+            Monitoramos cada publicação na Revista do INPI e defendemos seu pedido contra oposições,
+            até a concessão do certificado.
+          </p>
+        </div>
+      </div>
+    </section>
+
+    <!-- =====================  DIFERENCIAIS (BENTO GRID)  ===================== -->
+    <section id="diferenciais" class="relative z-10 px-5 md:px-10 py-24">
+      <div class="max-w-3xl mb-16 reveal">
+        <div class="sys-tag text-lime mb-5">
+          <span class="w-1.5 h-1.5 rounded-full bg-lime pulse-dot"></span>
+          Por que Vora
+        </div>
+        <h2 class="font-grotesk font-light tracking-[-0.05em] leading-[0.95] text-4xl md:text-6xl">
+          Nacional na técnica.<br /><span class="grad-lime italic font-medium">Alagoana no atendimento.</span>
+        </h2>
+      </div>
+
+      <div class="grid grid-cols-1 md:grid-cols-4 gap-5 auto-rows-[200px]">
+
+        <!-- Card grande 2x2 -->
+        <div class="glass rounded-2.5xl p-8 md:col-span-2 md:row-span-2 hover:border-lime/40 transition relative overflow-hidden noise reveal">
+          <div class="sys-tag text-lime mb-4 relative z-10">Especialistas de Alagoas</div>
+          <h3 class="font-grotesk text-3xl font-medium mb-4 relative z-10">A gente conhece o mercado daqui</h3>
+          <p class="text-white/50 leading-relaxed max-w-md relative z-10">
+            Você fala com quem está no mesmo fuso, entende o comércio de Maceió, Arapiraca e do interior,
+            e responde no WhatsApp como gente — não como robô de call center a mil quilômetros de distância.
+          </p>
+          <!-- data viz -->
+          <div class="absolute bottom-8 right-8 flex items-end gap-2 h-28 z-10">
+            <div class="w-4 bg-lime/80 rounded-t" style="height:60%"></div>
+            <div class="w-4 bg-lime/60 rounded-t" style="height:85%"></div>
+            <div class="w-4 bg-lime/40 rounded-t" style="height:45%"></div>
+            <div class="w-4 bg-lime rounded-t" style="height:100%"></div>
+          </div>
+        </div>
+
+        <!-- Card alto 1x2 (swatches) -->
+        <div class="glass rounded-2.5xl p-8 md:row-span-2 hover:border-lime/40 transition reveal">
+          <div class="sys-tag text-lime mb-4">Transparência</div>
+          <h3 class="font-grotesk text-2xl font-medium mb-4">Valor único, sem pegadinha</h3>
+          <p class="text-white/50 leading-relaxed mb-6">
+            Você sabe exatamente quanto vai pagar antes de começar. Sem taxa surpresa na aprovação.
+          </p>
+          <div class="space-y-3">
+            <div class="flex items-center gap-3">
+              <span class="w-8 h-8 rounded-lg bg-lime"></span>
+              <span class="font-mono text-xs text-white/50">Honorários Vora</span>
+            </div>
+            <div class="flex items-center gap-3">
+              <span class="w-8 h-8 rounded-lg bg-white/20"></span>
+              <span class="font-mono text-xs text-white/50">Taxa oficial INPI</span>
+            </div>
+            <div class="flex items-center gap-3">
+              <span class="w-8 h-8 rounded-lg border border-white/20"></span>
+              <span class="font-mono text-xs text-white/50">Surpresas · R$ 0</span>
+            </div>
+          </div>
+        </div>
+
+        <!-- Card accent lime -->
+        <div class="rounded-2.5xl p-8 bg-lime text-black hover:scale-[1.02] transition relative overflow-hidden noise reveal">
+          <div class="sys-tag text-black/60 mb-4 relative z-10">Garantia</div>
+          <h3 class="font-grotesk text-2xl font-bold mb-2 relative z-10">Negou? A gente continua.</h3>
+          <p class="text-black/70 leading-relaxed relative z-10">
+            Se o INPI indeferir, atuamos na defesa sem novos honorários.
+          </p>
+        </div>
+
+        <!-- Card normal -->
+        <div class="glass rounded-2.5xl p-8 hover:border-lime/40 transition reveal">
+          <div class="sys-tag text-lime mb-4">Segurança</div>
+          <h3 class="font-grotesk text-2xl font-medium mb-2">Time técnico especializado</h3>
+          <p class="text-white/50 leading-relaxed">
+            Propriedade intelectual é o nosso foco — não um serviço a mais na prateleira.
+          </p>
+        </div>
+      </div>
+    </section>
+
+    <!-- =====================  CONTRAST / DEPOIMENTOS (fundo claro)  ===================== -->
+    <section class="relative z-10 mt-10 bg-[#e5e5e5] text-black rounded-t-[4rem] px-5 md:px-10 py-24">
+      <div class="grid grid-cols-1 lg:grid-cols-2 gap-16 items-center">
+        <!-- Esquerda: metodologia numerada -->
+        <div>
+          <div class="sys-tag text-black/50 mb-5">
+            <span class="w-1.5 h-1.5 rounded-full bg-black"></span>
+            Quem confia na Vora
+          </div>
+          <h2 class="font-grotesk font-light tracking-[-0.05em] leading-[0.95] text-4xl md:text-5xl mb-10">
+            Empresários que dormem tranquilos
+          </h2>
+
+          <div class="space-y-8">
+            <div class="flex gap-5">
+              <div class="shrink-0 w-12 h-12 rounded-full border border-black/20 flex items-center justify-center font-mono text-sm">01</div>
+              <div>
+                <h3 class="font-grotesk text-xl font-medium mb-1">Registrei antes de abrir a franquia</h3>
+                <p class="text-black/60">A Vora me mostrou que meu nome estava livre e protocolou no mesmo dia. <span class="font-mono text-xs">— PLACEHOLDER: depoimento real</span></p>
+              </div>
+            </div>
+            <div class="flex gap-5">
+              <div class="shrink-0 w-12 h-12 rounded-full border border-black/20 flex items-center justify-center font-mono text-sm">02</div>
+              <div>
+                <h3 class="font-grotesk text-xl font-medium mb-1">Descobri que quase perdi minha marca</h3>
+                <p class="text-black/60">Um concorrente estava prestes a registrar o mesmo nome. Cheguei primeiro por pouco. <span class="font-mono text-xs">— PLACEHOLDER</span></p>
+              </div>
+            </div>
+            <div class="flex gap-5">
+              <div class="shrink-0 w-12 h-12 rounded-full border border-black/20 flex items-center justify-center font-mono text-sm">03</div>
+              <div>
+                <h3 class="font-grotesk text-xl font-medium mb-1">Atendimento de quem é daqui</h3>
+                <p class="text-black/60">Resolvi tudo pelo WhatsApp, falando com gente que entende Maceió. <span class="font-mono text-xs">— PLACEHOLDER</span></p>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <!-- Direita: retrato + card glass -->
+        <div class="relative">
+          <!-- Foto de cliente (imagem pública Unsplash). Troque pela foto real da Vora quando tiver. -->
+          <!-- onerror: se a imagem não carregar, cai para um placeholder estilizado sem quebrar o layout -->
+          <img
+            src="https://images.unsplash.com/photo-1560250097-0b93528c311a?w=800&q=80"
+            alt="Empresário cliente da Vora"
+            loading="lazy"
+            class="aspect-square object-cover rounded-[3rem] grayscale w-full max-w-md mx-auto"
+            onerror="this.onerror=null; this.replaceWith(Object.assign(document.createElement('div'), { className: 'aspect-square rounded-[3rem] bg-gradient-to-br from-neutral-400 to-neutral-700 grayscale w-full max-w-md mx-auto' }));"
+          />
+          <!-- card depoimento overlay -->
+          <div class="absolute -bottom-6 left-4 md:left-0 right-4 md:right-16 bg-black text-white rounded-3xl p-6 shadow-2xl">
+            <p class="text-white/80 leading-relaxed mb-3">
+              "Achei que ter CNPJ já protegia. A Vora me explicou que não — e resolveu antes que virasse problema."
+            </p>
+            <div class="sys-tag text-lime">★★★★★ · Cliente Vora · Maceió/AL</div>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- =====================  FORMULÁRIO / OFERTA (ANÁLISE GRÁTIS)  ===================== -->
+    <section id="analise" class="relative z-10 bg-black px-5 md:px-10 py-24">
+      <div class="grid grid-cols-1 lg:grid-cols-2 gap-12 items-center">
+        <!-- copy da oferta -->
+        <div class="reveal">
+          <div class="sys-tag text-lime mb-5">
+            <span class="w-1.5 h-1.5 rounded-full bg-lime pulse-dot"></span>
+            Análise gratuita · resposta em até 24h
+          </div>
+          <h2 class="font-grotesk font-light tracking-[-0.05em] leading-[0.95] text-4xl md:text-6xl mb-6">
+            Descubra <span class="grad-lime italic font-medium">grátis</span> se sua marca ainda pode ser registrada
+          </h2>
+          <p class="text-lg text-white/60 leading-relaxed mb-8">
+            Preencha os dados e nossa equipe faz a busca no INPI para você. Sem custo, sem compromisso —
+            e você descobre hoje se corre risco de perder o nome.
+          </p>
+          <ul class="space-y-3 text-white/70">
+            <li class="flex items-center gap-3"><span class="text-lime">✓</span> Busca de disponibilidade no banco do INPI</li>
+            <li class="flex items-center gap-3"><span class="text-lime">✓</span> Indicação das classes corretas para o seu negócio</li>
+            <li class="flex items-center gap-3"><span class="text-lime">✓</span> Orçamento transparente, valor único</li>
+          </ul>
+        </div>
+
+        <!-- FORMULÁRIO -->
+        <div class="glass rounded-2.5xl p-8 md:p-10 reveal">
+          <!-- Formulário curto: leva a pessoa ao formulário completo (/formulario) já preenchido; o lead cai no Sistema Vora. -->
+          <form id="lead-form" action="/formulario" method="GET" novalidate class="space-y-5">
+            <div>
+              <label class="sys-tag text-white/50 mb-2 block" for="nome">Seu nome</label>
+              <input id="nome" name="nome" type="text" required
+                class="w-full bg-white/5 border border-white/10 rounded-xl px-4 py-3 text-white placeholder-white/30 focus:border-lime focus:outline-none focus:ring-1 focus:ring-lime transition"
+                placeholder="Nome completo" />
+              <p class="err text-red-400 text-xs mt-1 hidden font-mono"></p>
+            </div>
+
+            <div>
+              <label class="sys-tag text-white/50 mb-2 block" for="marca">Nome da marca / empresa</label>
+              <input id="marca" name="marca" type="text" required
+                class="w-full bg-white/5 border border-white/10 rounded-xl px-4 py-3 text-white placeholder-white/30 focus:border-lime focus:outline-none focus:ring-1 focus:ring-lime transition"
+                placeholder="Ex.: Padaria Sol Nascente" />
+              <p class="err text-red-400 text-xs mt-1 hidden font-mono"></p>
+            </div>
+
+            <div class="grid grid-cols-1 sm:grid-cols-2 gap-5">
+              <div>
+                <label class="sys-tag text-white/50 mb-2 block" for="email">E-mail</label>
+                <input id="email" name="email" type="email" required
+                  class="w-full bg-white/5 border border-white/10 rounded-xl px-4 py-3 text-white placeholder-white/30 focus:border-lime focus:outline-none focus:ring-1 focus:ring-lime transition"
+                  placeholder="voce@email.com" />
+                <p class="err text-red-400 text-xs mt-1 hidden font-mono"></p>
+              </div>
+              <div>
+                <label class="sys-tag text-white/50 mb-2 block" for="whatsapp">WhatsApp</label>
+                <input id="whatsapp" name="whatsapp" type="tel" required inputmode="numeric"
+                  class="w-full bg-white/5 border border-white/10 rounded-xl px-4 py-3 text-white placeholder-white/30 focus:border-lime focus:outline-none focus:ring-1 focus:ring-lime transition"
+                  placeholder="(82) 90000-0000" />
+                <p class="err text-red-400 text-xs mt-1 hidden font-mono"></p>
+              </div>
+            </div>
+
+            <button type="submit" class="btn-neon w-full py-4 text-base">
+              Quero minha análise gratuita
+            </button>
+            <p class="text-center text-white/30 text-xs font-mono">
+              🔒 Seus dados estão seguros. Sem spam. Retorno em até 24h úteis.
+            </p>
+
+            <!-- mensagem de sucesso -->
+            <div id="form-success" class="hidden text-center py-4">
+              <div class="text-lime text-lg font-grotesk font-medium">✓ Quase lá!</div>
+              <p class="text-white/50 text-sm mt-2">Abrindo o formulário completo da análise…</p>
+            </div>
+          </form>
+        </div>
+      </div>
+    </section>
+
+    <!-- =====================  FAQ (OBJEÇÕES)  ===================== -->
+    <section id="faq" class="relative z-10 px-5 md:px-10 py-24">
+      <div class="max-w-3xl mb-14 reveal">
+        <div class="sys-tag text-lime mb-5">
+          <span class="w-1.5 h-1.5 rounded-full bg-lime pulse-dot"></span>
+          Perguntas frequentes
+        </div>
+        <h2 class="font-grotesk font-light tracking-[-0.05em] leading-[0.95] text-4xl md:text-6xl">
+          As dúvidas antes de proteger sua marca
+        </h2>
+      </div>
+
+      <div class="max-w-3xl space-y-4">
+        <details class="faq-item glass rounded-2xl p-6 group">
+          <summary class="flex items-center justify-between cursor-pointer list-none font-grotesk text-lg font-medium">
+            Quanto custa registrar uma marca?
+            <span class="faq-icon text-lime text-2xl leading-none">+</span>
+          </summary>
+          <p class="text-white/55 mt-4 leading-relaxed">
+            O custo tem duas partes: a taxa oficial do INPI (a partir de R$ 440 por classe, com desconto para
+            MEI/ME/EPP) e os honorários da Vora, sempre informados antes de começar. Desde 2025 o INPI unificou o
+            pagamento — você paga a taxa na entrada e nada mais na aprovação. Pense no valor de registrar contra o
+            custo de <span class="text-white">refazer toda a sua marca</span> se perder o nome.
+          </p>
+        </details>
+
+        <details class="faq-item glass rounded-2xl p-6 group">
+          <summary class="flex items-center justify-between cursor-pointer list-none font-grotesk text-lg font-medium">
+            Já tenho CNPJ e domínio. Não estou protegido?
+            <span class="faq-icon text-lime text-2xl leading-none">+</span>
+          </summary>
+          <p class="text-white/55 mt-4 leading-relaxed">
+            Não. CNPJ, domínio e Instagram são coisas diferentes de marca. A propriedade de uma marca no Brasil
+            só nasce com o registro no INPI. Sem ele, outra empresa pode registrar seu nome e exigir que você pare
+            de usá-lo.
+          </p>
+        </details>
+
+        <details class="faq-item glass rounded-2xl p-6 group">
+          <summary class="flex items-center justify-between cursor-pointer list-none font-grotesk text-lg font-medium">
+            Quanto tempo demora o processo no INPI?
+            <span class="faq-icon text-lime text-2xl leading-none">+</span>
+          </summary>
+          <p class="text-white/55 mt-4 leading-relaxed">
+            A concessão final do INPI leva, em média, de 8 a 12 meses. Mas o que protege você é o <span class="text-white">protocolo</span>,
+            feito pela Vora em até 24h. A partir dele, sua data de prioridade já está garantida — mesmo antes da
+            aprovação sair.
+          </p>
+        </details>
+
+        <details class="faq-item glass rounded-2xl p-6 group">
+          <summary class="flex items-center justify-between cursor-pointer list-none font-grotesk text-lg font-medium">
+            E se alguém já tiver registrado antes de mim?
+            <span class="faq-icon text-lime text-2xl leading-none">+</span>
+          </summary>
+          <p class="text-white/55 mt-4 leading-relaxed">
+            É exatamente por isso que a análise de viabilidade é o primeiro passo — e é gratuita. Descobrimos hoje
+            se sua marca está livre. Se houver conflito, indicamos os melhores caminhos (variação de nome, classe
+            ou estratégia) antes de você gastar qualquer valor.
+          </p>
+        </details>
+
+        <details class="faq-item glass rounded-2xl p-6 group">
+          <summary class="flex items-center justify-between cursor-pointer list-none font-grotesk text-lg font-medium">
+            Posso registrar sozinho, direto no INPI?
+            <span class="faq-icon text-lime text-2xl leading-none">+</span>
+          </summary>
+          <p class="text-white/55 mt-4 leading-relaxed">
+            Pode. Mas milhares de pedidos são indeferidos todo ano por erro de classe, especificação ou falha no
+            acompanhamento — e a taxa paga não volta. A Vora reduz esse risco e cuida de cada prazo por você.
+          </p>
+        </details>
+      </div>
+    </section>
+
+    <!-- =====================  CTA FINAL / FOOTER  ===================== -->
+    <footer class="relative z-10 bg-black px-5 md:px-10 pt-24 pb-10 overflow-hidden">
+      <!-- watermark -->
+      <div class="absolute inset-x-0 top-10 flex justify-center pointer-events-none select-none">
+        <span class="font-grotesk font-bold text-[7rem] md:text-[14rem] leading-none text-white/[0.03] tracking-tighter">VORA</span>
+      </div>
+
+      <!-- CTA -->
+      <div class="relative z-10 text-center max-w-3xl mx-auto mb-24">
+        <h2 class="font-grotesk font-light tracking-[-0.05em] leading-[0.95] text-4xl md:text-7xl mb-8">
+          Sua marca vale mais<br />que o risco de <span class="grad-lime italic font-medium">perdê-la.</span>
+        </h2>
+        <p class="text-white/60 text-lg mb-10">
+          Faça a análise gratuita agora. Leva 1 minuto — e pode salvar anos de trabalho.
+        </p>
+        <a href="/formulario" class="btn-neon inline-block text-lg px-10 py-5">
+          Proteger minha marca agora
+        </a>
+      </div>
+
+      <!-- rodapé 3 colunas -->
+      <div class="relative z-10 grid grid-cols-1 md:grid-cols-3 gap-10 border-t border-white/10 pt-12">
+        <div>
+          <div class="flex items-center gap-3 mb-4">
+            <div class="w-9 h-9 rounded-lg bg-lime flex items-center justify-center">
+              <span class="text-black font-bold text-lg">V</span>
+            </div>
+            <span class="font-grotesk font-semibold">Vora</span>
+          </div>
+          <p class="text-white/40 text-sm leading-relaxed max-w-xs">
+            Registro de marca no INPI para empresas de Alagoas. Proteção, transparência e atendimento de quem é daqui.
+          </p>
+        </div>
+
+        <div>
+          <div class="sys-tag text-white/40 mb-4">Navegação</div>
+          <ul class="space-y-2 text-white/60 text-sm">
+            <li><a href="#risco" class="hover:text-lime transition">O Risco</a></li>
+            <li><a href="#processo" class="hover:text-lime transition">Como Funciona</a></li>
+            <li><a href="#diferenciais" class="hover:text-lime transition">Diferenciais</a></li>
+            <li><a href="#faq" class="hover:text-lime transition">Dúvidas</a></li>
+          </ul>
+        </div>
+
+        <div>
+          <div class="sys-tag text-white/40 mb-4">Contato</div>
+          <ul class="space-y-2 text-white/60 text-sm font-mono">
+            <!-- PLACEHOLDERS: dados reais -->
+            <li><a href="https://wa.me/5582999967696" target="_blank" rel="noopener" class="hover:text-lime transition">WhatsApp: (82) 99996-7696</a></li>
+            <li>contato@vora.com.br</li>
+            <li>Maceió · Alagoas · Brasil</li>
+          </ul>
+          <!-- ícones sociais (hollow circles) -->
+          <div class="flex gap-3 mt-5">
+            <a href="#" aria-label="Instagram" class="w-9 h-9 rounded-full border border-white/20 flex items-center justify-center hover:border-lime hover:text-lime transition">ig</a>
+            <a href="#" aria-label="LinkedIn" class="w-9 h-9 rounded-full border border-white/20 flex items-center justify-center hover:border-lime hover:text-lime transition">in</a>
+            <a href="#" aria-label="WhatsApp" class="w-9 h-9 rounded-full border border-white/20 flex items-center justify-center hover:border-lime hover:text-lime transition">wa</a>
+          </div>
+        </div>
+      </div>
+
+      <div class="relative z-10 mt-12 pt-6 border-t border-white/5 flex flex-col md:flex-row justify-between gap-3 text-white/30 text-xs font-mono">
+        <span>© 2026 Vora Registro de Marcas. Todos os direitos reservados.</span>
+        <div class="flex gap-5">
+          <a href="#" class="hover:text-white/60 transition">Política de Privacidade</a>
+          <a href="#" class="hover:text-white/60 transition">Termos de Uso</a>
+        </div>
+      </div>
+    </footer>
+  </div>
+
+  <!-- =====================  BOTÃO FLUTUANTE WHATSAPP  ===================== -->
+  <!-- PLACEHOLDER: troque o número (formato internacional, sem símbolos) e a mensagem -->
+  <a href="https://wa.me/5582999967696?text=Ol%C3%A1!%20Quero%20fazer%20a%20an%C3%A1lise%20gratuita%20da%20minha%20marca."
+     target="_blank" rel="noopener"
+     aria-label="Falar no WhatsApp"
+     class="fixed bottom-6 right-6 z-50 flex items-center gap-3 bg-lime text-black font-bold px-5 py-4 rounded-full shadow-[0_0_30px_rgba(204,255,0,0.4)] hover:scale-105 transition">
+    <svg width="24" height="24" viewBox="0 0 24 24" fill="currentColor"><path d="M17.5 14.4c-.3-.2-1.8-.9-2-1-.3-.1-.5-.2-.7.1-.2.3-.8 1-.9 1.1-.2.2-.3.2-.6.1-1.6-.8-2.6-1.4-3.7-3.2-.3-.5.3-.5.8-1.5.1-.2 0-.4 0-.5s-.7-1.6-.9-2.2c-.2-.6-.5-.5-.7-.5h-.6c-.2 0-.5.1-.8.4-.3.3-1 1-1 2.5s1.1 2.9 1.2 3.1c.2.2 2.1 3.2 5.1 4.5 1.9.8 2.6.9 3.5.7.6-.1 1.8-.7 2-1.4.3-.7.3-1.3.2-1.4-.1-.2-.3-.2-.6-.4zM12 2a10 10 0 00-8.6 15l-1.3 4.7 4.8-1.3A10 10 0 1012 2z"/></svg>
+    <span class="hidden sm:block text-sm">Falar agora</span>
+  </a>
+
+  <!-- =====================  SCHEMA MARKUP (LegalService / LocalBusiness)  ===================== -->
+  <script type="application/ld+json">
+  {
+    "@context": "https://schema.org",
+    "@type": "LegalService",
+    "name": "Vora Registro de Marcas",
+    "description": "Registro de marca no INPI para empresas de Alagoas. Análise de viabilidade gratuita e protocolo em até 24h.",
+    "areaServed": { "@type": "State", "name": "Alagoas" },
+    "url": "https://vorapi.com.br/",
+    "telephone": "+55-82-99996-7696",
+    "priceRange": "$$",
+    "address": {
+      "@type": "PostalAddress",
+      "addressLocality": "Maceió",
+      "addressRegion": "AL",
+      "addressCountry": "BR"
+    },
+    "aggregateRating": {
+      "@type": "AggregateRating",
+      "ratingValue": "5.0",
+      "reviewCount": "50"
+    }
+  }
+  </script>
+
+  <!-- =====================  JAVASCRIPT VANILLA  ===================== -->
+  <script>
+    /* ---------- Máscara de WhatsApp ---------- */
+    const wpp = document.getElementById('whatsapp');
+    wpp.addEventListener('input', (e) => {
+      let v = e.target.value.replace(/\D/g, '').slice(0, 11);
+      if (v.length > 6) v = `(${v.slice(0,2)}) ${v.slice(2,7)}-${v.slice(7)}`;
+      else if (v.length > 2) v = `(${v.slice(0,2)}) ${v.slice(2)}`;
+      else if (v.length > 0) v = `(${v}`;
+      e.target.value = v;
+    });
+
+    /* ---------- Validação do formulário ---------- */
+    const form = document.getElementById('lead-form');
+    const emailRe = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+
+    function setError(input, msg) {
+      const p = input.parentElement.querySelector('.err');
+      if (msg) {
+        input.classList.add('border-red-400');
+        p.textContent = msg; p.classList.remove('hidden');
+      } else {
+        input.classList.remove('border-red-400');
+        p.textContent = ''; p.classList.add('hidden');
+      }
+    }
+
+    function validate() {
+      let ok = true;
+      const nome = form.nome, marca = form.marca, email = form.email, whats = form.whatsapp;
+
+      if (nome.value.trim().length < 2) { setError(nome, 'Informe seu nome.'); ok = false; } else setError(nome);
+      if (marca.value.trim().length < 2) { setError(marca, 'Informe o nome da marca.'); ok = false; } else setError(marca);
+      if (!emailRe.test(email.value.trim())) { setError(email, 'E-mail inválido.'); ok = false; } else setError(email);
+      const digits = whats.value.replace(/\D/g, '');
+      if (digits.length < 10) { setError(whats, 'WhatsApp inválido.'); ok = false; } else setError(whats);
+
+      return ok;
+    }
+
+    form.addEventListener('submit', function (e) {
+      e.preventDefault();
+      if (!validate()) return;
+
+      // Guarda o que já foi digitado e segue para o formulário completo, que chega preenchido.
+      try {
+        sessionStorage.setItem('vora_lead', JSON.stringify({
+          nome: form.nome.value.trim(), marca: form.marca.value.trim(),
+          email: form.email.value.trim(), whatsapp: form.whatsapp.value
+        }));
+      } catch (err) { /* sem sessionStorage: o formulário completo abre em branco */ }
+      form.querySelectorAll('input, button').forEach(el => el.style.display = 'none');
+      form.querySelector('#form-success').classList.remove('hidden');
+      window.location.href = '/formulario?origem=D';
+    });
+
+    /* ---------- Scroll reveal ---------- */
+    const io = new IntersectionObserver((entries) => {
+      entries.forEach(en => { if (en.isIntersecting) { en.target.classList.add('in-view'); io.unobserve(en.target); } });
+    }, { threshold: 0.12 });
+    document.querySelectorAll('.reveal').forEach(el => io.observe(el));
+  </script>
+</body>
+</html>
