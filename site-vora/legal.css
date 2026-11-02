@@ -1,0 +1,40 @@
+/* Páginas legais da Vora (Política de Privacidade e Termos de Uso) — mesma identidade do site, sem dependências externas além das fontes. */
+:root { color-scheme: dark; --lime: #ccff00; --txt: #ebebeb; --sub: rgba(235, 235, 235, .68); --linha: rgba(255, 255, 255, .1); }
+* { box-sizing: border-box; }
+html { scroll-behavior: smooth; }
+body { margin: 0; background: #000; color: var(--txt); font: 16px/1.7 'Space Grotesk', system-ui, sans-serif; -webkit-font-smoothing: antialiased; }
+a { color: var(--lime); }
+.shell { max-width: 1600px; margin: 0 auto; background: #0c0c0c; min-height: 100vh; position: relative; overflow: hidden;
+  background-image: linear-gradient(rgba(255,255,255,.035) 1px, transparent 1px), linear-gradient(90deg, rgba(255,255,255,.035) 1px, transparent 1px); background-size: 60px 60px; }
+@media (min-width: 768px) { .shell { margin: 16px auto; border-radius: 2.5rem; box-shadow: 0 0 0 1px var(--linha); min-height: calc(100vh - 32px); } }
+header { display: flex; align-items: center; justify-content: space-between; gap: 16px; padding: 20px clamp(16px, 4vw, 40px); }
+.logo { display: flex; align-items: center; gap: 12px; color: var(--txt); text-decoration: none; font-weight: 600; font-size: 18px; }
+.logo b { width: 44px; height: 44px; border-radius: 12px; background: var(--lime); color: #000; display: grid; place-items: center; font-size: 24px; }
+.btn { background: var(--lime); color: #000; font-weight: 700; border-radius: 999px; padding: 10px 20px; text-decoration: none; font-size: 14px; box-shadow: 0 0 30px rgba(204,255,0,.3); white-space: nowrap; }
+main { max-width: 860px; margin: 0 auto; padding: 24px clamp(16px, 4vw, 40px) 64px; }
+.tag { font: 500 10px 'JetBrains Mono', monospace; letter-spacing: .2em; text-transform: uppercase; color: var(--lime); }
+h1 { font-size: clamp(30px, 5vw, 46px); line-height: 1.1; margin: 10px 0 8px; letter-spacing: -.02em; }
+.meta { font: 12px 'JetBrains Mono', monospace; color: rgba(235,235,235,.45); margin-bottom: 28px; }
+.resumo { border: 1px solid var(--linha); background: rgba(255,255,255,.03); border-radius: 20px; padding: 20px 24px; margin: 0 0 32px; }
+.resumo h2 { margin-top: 0; font-size: 18px; border: 0; padding: 0; }
+.resumo ul { margin-bottom: 0; }
+nav.sumario { border-left: 2px solid var(--lime); padding-left: 16px; margin: 0 0 36px; font-size: 14px; }
+nav.sumario ol { margin: 8px 0 0; padding-left: 20px; columns: 2 260px; }
+nav.sumario a { color: var(--sub); text-decoration: none; }
+nav.sumario a:hover { color: var(--lime); }
+h2 { font-size: 22px; margin: 40px 0 10px; padding-top: 12px; border-top: 1px solid var(--linha); scroll-margin-top: 16px; }
+h3 { font-size: 16px; margin: 22px 0 6px; color: #fff; }
+p, li { color: var(--sub); }
+strong { color: var(--txt); }
+ul, ol { padding-left: 22px; }
+li { margin: 4px 0; }
+table { width: 100%; border-collapse: collapse; font-size: 14px; margin: 12px 0; }
+th, td { text-align: left; vertical-align: top; padding: 10px 12px; border-bottom: 1px solid var(--linha); color: var(--sub); }
+th { color: var(--txt); font-weight: 600; background: rgba(255,255,255,.03); }
+.tabela { overflow-x: auto; }
+mark.pend { background: rgba(204,255,0,.18); color: var(--lime); padding: 0 4px; border-radius: 4px; }
+footer { border-top: 1px solid rgba(255,255,255,.05); padding: 24px clamp(16px, 4vw, 40px); display: flex; flex-wrap: wrap; gap: 12px 24px; justify-content: space-between;
+  font: 12px 'JetBrains Mono', monospace; color: rgba(235,235,235,.35); }
+footer a { color: rgba(235,235,235,.55); text-decoration: none; }
+footer a:hover { color: #fff; }
+@media print { body, .shell { background: #fff; color: #000; } .shell { box-shadow: none; margin: 0; } p, li, td, th { color: #222; } header .btn, nav.sumario { display: none; } a { color: #000; } }
