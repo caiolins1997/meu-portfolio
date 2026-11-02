@@ -1,7 +1,7 @@
 // Clientes: Relatório Cadastral (2.1), pasta do cliente (Drive 01–06), checklist pré-protocolo
 // com trava da GRU (Item 11.3) e protocolo exclusivo de Caio (D6).
 import {
-  store, api, esc, br, brl, tabs, toast, falha, modal, lerForm, campos, getConfig, isAdmin, fmtCpfCnpj, uploadArquivo, dataHora, confirmar,
+  BASE, store, api, esc, br, brl, tabs, toast, falha, modal, lerForm, campos, getConfig, isAdmin, fmtCpfCnpj, uploadArquivo, dataHora, confirmar,
 } from '../core.js';
 import { cabecalho } from '../app.js';
 import { ETAPAS_FUNIL, etapaNome, CANAIS, PASTAS, CHECKLIST, badgeViab } from '../lib/dominio.js';
@@ -98,7 +98,7 @@ function cadastro(box, c, { cfg, recarregar, equipe }) {
   box.querySelector('[data-a=rel]').onclick = async () => {
     const files = await api(`/api/files?clienteId=${c.id}`);
     const logo = files.find(f => f.pasta === '05' && /^image\//.test(f.mime));
-    abrirDocumento({ titulo: `Relatório Cadastral - ${c.marca}`, kicker: 'Relatório cadastral', empresa: cfg.empresa, html: relatorioCadastral({ ...c, ...ler(), logoUrl: logo ? `${location.origin}/api/files/${logo.id}` : '' }, cfg), clienteId: c.id, pasta: '02' });
+    abrirDocumento({ titulo: `Relatório Cadastral - ${c.marca}`, kicker: 'Relatório cadastral', empresa: cfg.empresa, html: relatorioCadastral({ ...c, ...ler(), logoUrl: logo ? `${location.origin}${BASE}/api/files/${logo.id}` : '' }, cfg), clienteId: c.id, pasta: '02' });
   };
   box.querySelector('[data-a=cnpj]').onclick = async () => {
     const cnpj = apenasDigitos(box.querySelector('[name=cpfCnpj]').value);
@@ -135,7 +135,7 @@ async function pasta(box, c, { recarregar }) {
       const fs = files.filter(f => f.pasta === pid);
       return `<div class="folder"><h4>📁 ${esc(nome)} <span class="badge n">${fs.length}</span></h4>
         <div class="stack" style="gap:6px">${fs.map(f => `<div class="file-row"><span>${/^image\//.test(f.mime) ? '🖼' : /pdf/.test(f.mime) ? '📄' : '📎'}</span>
-          <a href="/api/files/${f.id}" target="_blank" rel="noopener">${esc(f.nome)}</a><span class="faint tiny" style="margin-left:auto">${(f.tamanho / 1024).toFixed(0)} KB · ${esc(f.criado_por || '')}</span>
+          <a href="${BASE}/api/files/${f.id}" target="_blank" rel="noopener">${esc(f.nome)}</a><span class="faint tiny" style="margin-left:auto">${(f.tamanho / 1024).toFixed(0)} KB · ${esc(f.criado_por || '')}</span>
           <button class="btn xs ghost" data-del="${f.id}" title="Excluir">✕</button></div>`).join('')}</div>
         <div class="dropzone" data-pasta="${pid}" style="margin-top:8px">Soltar arquivos aqui ou clicar para enviar</div></div>`;
     }).join('')}</div>`;

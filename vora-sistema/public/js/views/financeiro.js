@@ -155,7 +155,7 @@ function tabDespesas(box, { despesas, recarregar }) {
 function tabAsaas(box, { vendas, parceiros }) {
   box.innerHTML = `<div class="grid g2"><div class="card"><h2>Asaas — baixa automática</h2><ol class="small muted" style="padding-left:18px">
     <li>No Asaas, crie a cobrança e preencha a <b>Referência externa</b> como <span class="mono">ID-DA-VENDA:0</span> (0 = 1ª parcela, 1 = 2ª…). O ID aparece na URL da venda.</li>
-    <li>Em Integrações › Webhooks, aponte para <span class="mono">${esc(location.origin)}/api/webhooks/asaas</span> e defina um token de autenticação.</li>
+    <li>Em Integrações › Webhooks, aponte para <span class="mono">${esc(location.origin)}/admin/api/webhooks/asaas</span> e defina um token de autenticação.</li>
     <li>O mesmo token deve estar na variável <span class="mono">ASAAS_WEBHOOK_TOKEN</span> do servidor.</li>
     <li>Eventos <span class="mono">PAYMENT_RECEIVED</span> e <span class="mono">PAYMENT_CONFIRMED</span> marcam a parcela como paga e liberam a comissão.</li></ol>
     <a class="btn" target="_blank" rel="noopener" href="https://www.asaas.com/">Abrir Asaas ↗</a></div>

@@ -12,7 +12,10 @@ import { apenasDigitos } from './public/js/lib/texto.js';
 
 const PORT = Number(process.env.PORT || 3000);
 const PROD = process.env.NODE_ENV === 'production';
+// Sistema interno em vorapi.com.br/admin; formulário público em vorapi.com.br/formulario.
+const BASE = '/admin';
 const app = express();
+const r = express.Router();
 app.set('trust proxy', 1);
 app.disable('x-powered-by');
 
@@ -71,7 +74,7 @@ const soAdmin = (req, res, next) => req.user?.papel === 'admin' ? next() : res.s
 
 const json = express.json({ limit: '6mb' });
 
-app.post('/api/login', json, (req, res) => {
+r.post('/api/login', json, (req, res) => {
   const ip = req.ip;
   if (limitar('login:' + ip, 10, 15 * 60 * 1000)) return res.status(429).json({ erro: 'Muitas tentativas. Aguarde 15 minutos.' });
   const { email, senha } = req.body || {};
@@ -81,18 +84,18 @@ app.post('/api/login', json, (req, res) => {
   const dias = 30;
   db.prepare('INSERT INTO sessions (token, user_id, expira_em) VALUES (?,?,?)').run(token, u.id, Date.now() + dias * 86400000);
   db.prepare('DELETE FROM sessions WHERE expira_em < ?').run(Date.now());
-  res.setHeader('Set-Cookie', `${COOKIE}=${token}; Path=/; HttpOnly; SameSite=Lax; Max-Age=${dias * 86400}${PROD ? '; Secure' : ''}`);
+  res.setHeader('Set-Cookie', `${COOKIE}=${token}; Path=${BASE}; HttpOnly; SameSite=Lax; Max-Age=${dias * 86400}${PROD ? '; Secure' : ''}`);
   registrarLog(u.email, 'login', 'users', String(u.id));
   res.json({ id: u.id, nome: u.nome, email: u.email, papel: u.papel });
 });
-app.post('/api/logout', (req, res) => {
+r.post('/api/logout', (req, res) => {
   const tok = lerCookie(req, COOKIE);
   if (tok) db.prepare('DELETE FROM sessions WHERE token = ?').run(tok);
-  res.setHeader('Set-Cookie', `${COOKIE}=; Path=/; HttpOnly; SameSite=Lax; Max-Age=0`);
+  res.setHeader('Set-Cookie', `${COOKIE}=; Path=${BASE}; HttpOnly; SameSite=Lax; Max-Age=0`);
   res.json({ ok: true });
 });
-app.get('/api/me', auth, (req, res) => res.json(req.user));
-app.post('/api/me/senha', auth, json, (req, res) => {
+r.get('/api/me', auth, (req, res) => res.json(req.user));
+r.post('/api/me/senha', auth, json, (req, res) => {
   const { atual, nova } = req.body || {};
   const u = db.prepare('SELECT * FROM users WHERE id = ?').get(req.user.id);
   if (!conferirSenha(String(atual || ''), u.senha_hash)) return res.status(400).json({ erro: 'Senha atual incorreta.' });
@@ -103,10 +106,10 @@ app.post('/api/me/senha', auth, json, (req, res) => {
 });
 
 // ---------- usuários (admin) ----------
-app.get('/api/users', auth, (req, res) => {
+r.get('/api/users', auth, (req, res) => {
   res.json(db.prepare('SELECT id, nome, email, papel, ativo, criado_em FROM users ORDER BY id').all());
 });
-app.post('/api/users', auth, soAdmin, json, (req, res) => {
+r.post('/api/users', auth, soAdmin, json, (req, res) => {
   const { nome, email, senha, papel } = req.body || {};
   if (!nome || !email || String(senha || '').length < 8) return res.status(400).json({ erro: 'Informe nome, e-mail e senha (mín. 8 caracteres).' });
   try {
@@ -116,7 +119,7 @@ app.post('/api/users', auth, soAdmin, json, (req, res) => {
     res.json({ id: Number(r.lastInsertRowid) });
   } catch { res.status(400).json({ erro: 'E-mail já cadastrado.' }); }
 });
-app.put('/api/users/:id', auth, soAdmin, json, (req, res) => {
+r.put('/api/users/:id', auth, soAdmin, json, (req, res) => {
   const { nome, papel, ativo, senha } = req.body || {};
   const u = db.prepare('SELECT * FROM users WHERE id = ?').get(req.params.id);
   if (!u) return res.status(404).json({ erro: 'Usuário não encontrado.' });
@@ -179,12 +182,12 @@ export function pendenciasChecklist(c) {
   return falta;
 }
 
-app.get('/api/c/:col', auth, colValida, (req, res) => res.json(listar(req.params.col, req.query)));
-app.get('/api/c/:col/:id', auth, colValida, (req, res) => {
+r.get('/api/c/:col', auth, colValida, (req, res) => res.json(listar(req.params.col, req.query)));
+r.get('/api/c/:col/:id', auth, colValida, (req, res) => {
   const d = obter(req.params.col, req.params.id);
   d ? res.json(d) : res.status(404).json({ erro: 'Não encontrado.' });
 });
-app.post('/api/c/:col', auth, colValida, json, (req, res) => {
+r.post('/api/c/:col', auth, colValida, json, (req, res) => {
   if (!podeEscrever(req, res)) return;
   const dados = req.body || {};
   const erro = validarRegras(req.params.col, null, dados, req.user);
@@ -193,7 +196,7 @@ app.post('/api/c/:col', auth, colValida, json, (req, res) => {
   registrarLog(req.user.email, 'criar', req.params.col, d.id, d.marca || d.nome || d.titulo || '');
   res.json(d);
 });
-app.post('/api/c/:col/bulk', auth, colValida, express.json({ limit: '30mb' }), (req, res) => {
+r.post('/api/c/:col/bulk', auth, colValida, express.json({ limit: '30mb' }), (req, res) => {
   if (!podeEscrever(req, res)) return;
   const itens = Array.isArray(req.body?.itens) ? req.body.itens : [];
   if (itens.length > 20000) return res.status(400).json({ erro: 'Máximo de 20.000 itens por importação.' });
@@ -201,7 +204,7 @@ app.post('/api/c/:col/bulk', auth, colValida, express.json({ limit: '30mb' }), (
   registrarLog(req.user.email, 'importar', req.params.col, '', `${n} itens`);
   res.json({ criados: n });
 });
-app.put('/api/c/:col/:id', auth, colValida, json, (req, res) => {
+r.put('/api/c/:col/:id', auth, colValida, json, (req, res) => {
   if (!podeEscrever(req, res)) return;
   const antigo = obter(req.params.col, req.params.id);
   if (!antigo) {
@@ -215,13 +218,13 @@ app.put('/api/c/:col/:id', auth, colValida, json, (req, res) => {
   registrarLog(req.user.email, 'atualizar', req.params.col, d.id, Object.keys(req.body || {}).join(','));
   res.json(d);
 });
-app.delete('/api/c/:col/:id', auth, colValida, (req, res) => {
+r.delete('/api/c/:col/:id', auth, colValida, (req, res) => {
   if (req.user.papel !== 'admin' && !req.colCfg.colabRemove) return res.status(403).json({ erro: 'Apenas o administrador pode excluir este registro.' });
   remover(req.params.col, req.params.id);
   registrarLog(req.user.email, 'excluir', req.params.col, req.params.id);
   res.json({ ok: true });
 });
-app.post('/api/c/:col/bulk-update', auth, colValida, express.json({ limit: '30mb' }), (req, res) => {
+r.post('/api/c/:col/bulk-update', auth, colValida, express.json({ limit: '30mb' }), (req, res) => {
   if (!podeEscrever(req, res)) return;
   if (['analises', 'clientes', 'config'].includes(req.params.col)) return res.status(400).json({ erro: 'Atualização em lote não permitida nesta coleção.' });
   const itens = Array.isArray(req.body?.itens) ? req.body.itens : [];
@@ -229,7 +232,7 @@ app.post('/api/c/:col/bulk-update', auth, colValida, express.json({ limit: '30mb
   registrarLog(req.user.email, 'atualizar-lote', req.params.col, '', `${n} itens`);
   res.json({ atualizados: n });
 });
-app.post('/api/c/:col/bulk-delete', auth, colValida, json, (req, res) => {
+r.post('/api/c/:col/bulk-delete', auth, colValida, json, (req, res) => {
   if (req.user.papel !== 'admin' && !req.colCfg.colabRemove) return res.status(403).json({ erro: 'Sem permissão.' });
   const ids = Array.isArray(req.body?.ids) ? req.body.ids : [];
   transacao(() => ids.forEach(id => remover(req.params.col, id)));
@@ -237,7 +240,7 @@ app.post('/api/c/:col/bulk-delete', auth, colValida, json, (req, res) => {
 });
 
 // ---------- protocolo (exclusivo Caio — Item 11 / D6) ----------
-app.post('/api/clientes/:id/protocolar', auth, soAdmin, json, (req, res) => {
+r.post('/api/clientes/:id/protocolar', auth, soAdmin, json, (req, res) => {
   const c = obter('clientes', req.params.id);
   if (!c) return res.status(404).json({ erro: 'Cliente não encontrado.' });
   const falta = pendenciasChecklist(c);
@@ -257,14 +260,14 @@ app.post('/api/clientes/:id/protocolar', auth, soAdmin, json, (req, res) => {
   registrarLog(req.user.email, 'protocolar', 'clientes', c.id, pedidos.map(p => p.numero).join(','));
   res.json({ ok: true, processos: criados });
 });
-app.get('/api/clientes/:id/pendencias', auth, (req, res) => {
+r.get('/api/clientes/:id/pendencias', auth, (req, res) => {
   const c = obter('clientes', req.params.id);
   c ? res.json({ falta: pendenciasChecklist(c) }) : res.status(404).json({ erro: 'Não encontrado.' });
 });
 
 // ---------- arquivos (pasta do cliente 01–06) ----------
 const PASTAS = ['01', '02', '02.1', '03', '04', '05', '06'];
-app.post('/api/files', auth, express.raw({ type: '*/*', limit: '25mb' }), (req, res) => {
+r.post('/api/files', auth, express.raw({ type: '*/*', limit: '25mb' }), (req, res) => {
   const { clienteId = '', pasta = '01', nome = 'arquivo' } = req.query;
   if (!PASTAS.includes(String(pasta))) return res.status(400).json({ erro: 'Pasta inválida.' });
   if (!req.body?.length) return res.status(400).json({ erro: 'Arquivo vazio.' });
@@ -276,13 +279,13 @@ app.post('/api/files', auth, express.raw({ type: '*/*', limit: '25mb' }), (req, 
   registrarLog(req.user.email, 'upload', 'files', id, nomeLimpo);
   res.json({ id, nome: nomeLimpo });
 });
-app.get('/api/files', auth, (req, res) => {
+r.get('/api/files', auth, (req, res) => {
   const rows = req.query.clienteId
     ? db.prepare('SELECT * FROM files WHERE cliente_id = ? ORDER BY pasta, criado_em').all(String(req.query.clienteId))
     : db.prepare('SELECT * FROM files ORDER BY criado_em DESC LIMIT 500').all();
   res.json(rows);
 });
-app.get('/api/files/:id', auth, (req, res) => {
+r.get('/api/files/:id', auth, (req, res) => {
   const f = db.prepare('SELECT * FROM files WHERE id = ?').get(req.params.id);
   if (!f) return res.status(404).end();
   const inline = /^(image\/|application\/pdf)/.test(f.mime) && req.query.download === undefined;
@@ -290,7 +293,7 @@ app.get('/api/files/:id', auth, (req, res) => {
   res.set('Content-Disposition', `${inline ? 'inline' : 'attachment'}; filename*=UTF-8''${encodeURIComponent(f.nome)}`);
   fs.createReadStream(path.join(UPLOAD_DIR, f.id)).pipe(res);
 });
-app.delete('/api/files/:id', auth, (req, res) => {
+r.delete('/api/files/:id', auth, (req, res) => {
   const f = db.prepare('SELECT * FROM files WHERE id = ?').get(req.params.id);
   if (!f) return res.status(404).json({ erro: 'Arquivo não encontrado.' });
   if (req.user.papel !== 'admin' && f.criado_por !== req.user.nome) return res.status(403).json({ erro: 'Apenas quem enviou ou o administrador pode excluir.' });
@@ -301,7 +304,7 @@ app.delete('/api/files/:id', auth, (req, res) => {
 });
 
 // ---------- RPI / vigilância ----------
-app.post('/api/rpi/upload', auth, async (req, res) => {
+r.post('/api/rpi/upload', auth, async (req, res) => {
   const tmp = path.join(DATA_DIR, `rpi-${uid()}.tmp`);
   try {
     await pipeline(req, fs.createWriteStream(tmp));
@@ -313,7 +316,7 @@ app.post('/api/rpi/upload', auth, async (req, res) => {
     res.status(400).json({ erro: e.message });
   } finally { fs.rm(tmp, { force: true }, () => {}); }
 });
-app.post('/api/rpi/baixar', auth, json, async (req, res) => {
+r.post('/api/rpi/baixar', auth, json, async (req, res) => {
   const numero = apenasDigitos(req.body?.numero);
   if (numero.length !== 4) return res.status(400).json({ erro: 'Informe o nº da RPI com 4 dígitos.' });
   try {
@@ -323,11 +326,11 @@ app.post('/api/rpi/baixar', auth, json, async (req, res) => {
 });
 
 // ---------- formulário público (Etapa 3) ----------
-app.get('/api/public/info', (req, res) => {
+r.get('/api/public/info', (req, res) => {
   const cfg = getConfig();
   res.json({ nome: cfg.empresa?.nome, whatsapp: cfg.empresa?.whatsapp || '', site: cfg.empresa?.site || 'https://vorapi.com.br' });
 });
-app.post('/api/public/formulario', json, (req, res) => {
+r.post('/api/public/formulario', json, (req, res) => {
   if (limitar('form:' + req.ip, 8, 60 * 60 * 1000)) return res.status(429).json({ erro: 'Muitos envios. Tente novamente mais tarde.' });
   const b = req.body || {};
   if (b.website) return res.json({ ok: true }); // honeypot anti-spam
@@ -362,7 +365,7 @@ app.post('/api/public/formulario', json, (req, res) => {
 });
 
 // ---------- webhook Asaas (baixa automática de parcelas) ----------
-app.post('/api/webhooks/asaas', json, (req, res) => {
+r.post('/api/webhooks/asaas', json, (req, res) => {
   const tokenEsperado = process.env.ASAAS_WEBHOOK_TOKEN;
   if (!tokenEsperado || req.headers['asaas-access-token'] !== tokenEsperado) return res.status(401).end();
   const { event, payment } = req.body || {};
@@ -377,18 +380,23 @@ app.post('/api/webhooks/asaas', json, (req, res) => {
 });
 
 // ---------- backup e log ----------
-app.get('/api/backup', auth, soAdmin, (req, res) => {
+r.get('/api/backup', auth, soAdmin, (req, res) => {
   res.set('Content-Disposition', `attachment; filename="vora-backup-${agora().slice(0, 10)}.json"`);
   res.json({ geradoEm: agora(), docs: db.prepare('SELECT * FROM docs').all(), files: db.prepare('SELECT * FROM files').all() });
 });
-app.get('/api/log', auth, soAdmin, (req, res) => res.json(db.prepare('SELECT * FROM log ORDER BY id DESC LIMIT 400').all()));
-app.get('/api/saude', (req, res) => res.json({ ok: true }));
+r.get('/api/log', auth, soAdmin, (req, res) => res.json(db.prepare('SELECT * FROM log ORDER BY id DESC LIMIT 400').all()));
+r.get('/api/saude', (req, res) => res.json({ ok: true }));
 
 // ---------- front-end ----------
 const PUB = path.resolve('public');
-app.get(['/formulario', '/f'], (req, res) => res.sendFile(path.join(PUB, 'formulario.html')));
-app.use(express.static(PUB, { maxAge: PROD ? '1h' : 0, index: 'index.html' }));
-app.use('/api', (req, res) => res.status(404).json({ erro: 'Rota não encontrada.' }));
+const formulario = (req, res) => res.sendFile(path.join(PUB, 'formulario.html'));
+app.get('/formulario', formulario);
+r.get('/formulario', formulario);
+r.use('/api', (req, res) => res.status(404).json({ erro: 'Rota não encontrada.' }));
+r.use(express.static(PUB, { maxAge: PROD ? '1h' : 0, index: 'index.html', redirect: false }));
+app.use(BASE, (req, res, next) => (req.originalUrl === BASE ? res.redirect(301, BASE + '/') : next()));
+app.use(BASE, r);
+app.get('/', (req, res) => res.redirect(BASE + '/'));
 app.use((err, req, res, _next) => {
   console.error(err);
   res.status(err.status || 500).json({ erro: err.type === 'entity.too.large' ? 'Arquivo grande demais.' : 'Erro interno.' });

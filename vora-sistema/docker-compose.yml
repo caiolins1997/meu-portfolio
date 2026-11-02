@@ -1,4 +1,5 @@
-# Implantação atrás do proxy Traefik do Coolify (rede "coolify"), com HTTPS automático (Let's Encrypt).
+# Implantação atrás do proxy Traefik do Coolify: só /admin (sistema interno) e /formulario (público)
+# do domínio principal são roteados para cá; o restante continua servido pelo site vorapi.com.br.
 services:
   vora-sistema:
     build: .
@@ -16,11 +17,13 @@ services:
       - traefik.enable=true
       - traefik.docker.network=coolify
       - traefik.http.middlewares.vora-https.redirectscheme.scheme=https
-      - traefik.http.routers.vora-http.rule=Host(`${DOMINIO}`)
+      - traefik.http.routers.vora-http.rule=Host(`${DOMINIO}`) && (PathPrefix(`/admin`) || Path(`/formulario`))
       - traefik.http.routers.vora-http.entrypoints=http
       - traefik.http.routers.vora-http.middlewares=vora-https
-      - traefik.http.routers.vora-https.rule=Host(`${DOMINIO}`)
+      - traefik.http.routers.vora-http.priority=1000
+      - traefik.http.routers.vora-https.rule=Host(`${DOMINIO}`) && (PathPrefix(`/admin`) || Path(`/formulario`))
       - traefik.http.routers.vora-https.entrypoints=https
+      - traefik.http.routers.vora-https.priority=1000
       - traefik.http.routers.vora-https.tls=true
       - traefik.http.routers.vora-https.tls.certresolver=letsencrypt
       - traefik.http.services.vora-sistema.loadbalancer.server.port=3000

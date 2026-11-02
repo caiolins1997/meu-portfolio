@@ -1,5 +1,5 @@
 // Configurações (somente administrador): equipe, dados da empresa, metas de comissão, backup e auditoria.
-import { api, esc, tabs, campos, lerForm, toast, falha, getConfig, saveConfig, isAdmin, modal, state, dataHora } from '../core.js';
+import { BASE, api, esc, tabs, campos, lerForm, toast, falha, getConfig, saveConfig, isAdmin, modal, state, dataHora } from '../core.js';
 import { cabecalho } from '../app.js';
 
 let aba = 'equipe';
@@ -63,7 +63,7 @@ export async function render(el) {
     };
   } else {
     const log = await api('/api/log');
-    box.innerHTML = `<div class="card"><h2>Backup</h2><p class="sub">Baixe uma cópia completa dos dados (JSON). Os arquivos enviados ficam no volume do servidor.</p><a class="btn neon" href="/api/backup">Baixar backup agora</a></div>
+    box.innerHTML = `<div class="card"><h2>Backup</h2><p class="sub">Baixe uma cópia completa dos dados (JSON). Os arquivos enviados ficam no volume do servidor.</p><a class="btn neon" href="${BASE}/api/backup">Baixar backup agora</a></div>
       <div class="card"><h2>Auditoria (últimas 400 ações)</h2><div class="table-wrap"><table class="t"><tr><th>Quando</th><th>Usuário</th><th>Ação</th><th>Coleção</th><th>Resumo</th></tr>
       ${log.map(l => `<tr><td class="nowrap small">${dataHora(l.em + 'Z')}</td><td class="small">${esc(l.usuario)}</td><td>${esc(l.acao)}</td><td class="mono small">${esc(l.col || '')}</td><td class="small faint">${esc(l.resumo || '')}</td></tr>`).join('')}</table></div></div>`;
   }

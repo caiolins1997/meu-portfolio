@@ -1,5 +1,5 @@
 // Etapa 5 — Análise da marca pretendida. Fluxo D4: Agente de IA → Colaborador → Caio → envio.
-import { store, api, esc, br, kanban, modal, campos, lerForm, toast, falha, copiar, getConfig, isAdmin, uploadArquivo, state, confirmar } from '../core.js';
+import { BASE, store, api, esc, br, kanban, modal, campos, lerForm, toast, falha, copiar, getConfig, isAdmin, uploadArquivo, state, confirmar } from '../core.js';
 import { cabecalho } from '../app.js';
 import { STATUS_ANALISE, badgeViab, VIABILIDADE } from '../lib/dominio.js';
 import { variantesFoneticas, apenasDigitos } from '../lib/texto.js';
@@ -244,7 +244,7 @@ async function editarAnterioridade(a, i, c, cfg) {
   r.imagemUrl = atual.imagemUrl || '';
   if (imagem && c.id) {
     const up = await uploadArquivo(imagem, { clienteId: c.id, pasta: '02', nome: `Anterioridade ${r.numero} - ${r.marca}.${imagem.name.split('.').pop()}` });
-    r.imagemUrl = `${location.origin}/api/files/${up.id}`;
+    r.imagemUrl = `${location.origin}${BASE}/api/files/${up.id}`;
   }
   const lista = [...(a.colidencias || [])];
   if (i >= 0) lista[i] = r; else lista.push(r);

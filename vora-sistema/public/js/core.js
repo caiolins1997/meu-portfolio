@@ -3,8 +3,11 @@ import { br as brData } from './lib/prazos.js';
 import { apenasDigitos } from './lib/texto.js';
 
 export const state = { user: null, cache: {}, config: null };
+// O sistema interno é servido em vorapi.com.br/admin; o formulário público fica em /formulario.
+export const BASE = '/admin';
 
 export async function api(url, opts = {}) {
+  if (url.startsWith('/api')) url = BASE + url;
   const o = { credentials: 'same-origin', ...opts, headers: { ...(opts.headers || {}) } };
   if (o.body && typeof o.body === 'object' && !(o.body instanceof Blob) && !(o.body instanceof ArrayBuffer) && !(o.body instanceof File)) {
     o.body = JSON.stringify(o.body);

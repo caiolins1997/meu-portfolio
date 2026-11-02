@@ -3,7 +3,7 @@ const form = document.getElementById('form');
 const $ = (s) => form.querySelector(s);
 const origem = new URLSearchParams(location.search).get('origem') || 'D';
 let info = {};
-fetch('/api/public/info').then(r => r.json()).then(d => { info = d; }).catch(() => {});
+fetch('/admin/api/public/info').then(r => r.json()).then(d => { info = d; }).catch(() => {});
 
 form.addEventListener('change', () => {
   document.getElementById('logo-box').hidden = $('input[name=temLogo]:checked').value !== 'sim';
@@ -39,7 +39,7 @@ form.addEventListener('submit', async (e) => {
   const b = document.getElementById('enviar');
   b.disabled = true; b.textContent = 'Enviando…';
   try {
-    const r = await fetch('/api/public/formulario', { method: 'POST', headers: { 'Content-Type': 'application/json' }, body: JSON.stringify(dados) });
+    const r = await fetch('/admin/api/public/formulario', { method: 'POST', headers: { 'Content-Type': 'application/json' }, body: JSON.stringify(dados) });
     const j = await r.json();
     if (!r.ok) throw new Error(j.erro || 'Erro ao enviar');
     form.hidden = true;
