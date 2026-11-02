@@ -5,6 +5,17 @@ const origem = new URLSearchParams(location.search).get('origem') || 'D';
 let info = {};
 fetch('/admin/api/public/info').then(r => r.json()).then(d => { info = d; }).catch(() => {});
 
+// Pré-preenchimento com o que a pessoa já digitou no formulário curto do site (vorapi.com.br/#analise).
+try {
+  const pre = JSON.parse(sessionStorage.getItem('vora_lead') || 'null');
+  if (pre) {
+    for (const k of ['nome', 'marca', 'email']) if (pre[k] && form.elements[k]) form.elements[k].value = pre[k];
+    const tel = String(pre.whatsapp || pre.telefone || '').replace(/\D/g, '');
+    if (tel) form.elements.telefone.value = `+55 ${tel.replace(/^55(?=\d{10,11}$)/, '').replace(/^(\d{2})(\d{4,5})(\d{4})$/, '$1 $2-$3')}`;
+    sessionStorage.removeItem('vora_lead');
+  }
+} catch { /* sem sessionStorage: segue sem pré-preenchimento */ }
+
 form.addEventListener('change', () => {
   document.getElementById('logo-box').hidden = $('input[name=temLogo]:checked').value !== 'sim';
   $('#cnpj').hidden = $('input[name=tipoPessoa]:checked').value !== 'PJ';
