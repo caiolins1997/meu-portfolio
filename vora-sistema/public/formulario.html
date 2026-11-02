@@ -1,0 +1,79 @@
+<!doctype html>
+<html lang="pt-BR">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Análise de Viabilidade da Marca · Vora</title>
+  <meta name="description" content="Análise detalhada e urgente da sua marca em todo o território nacional. Vora Propriedade Industrial.">
+  <meta name="theme-color" content="#0a0a0a">
+  <link rel="icon" href="/img/favicon.svg" type="image/svg+xml">
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@300;400;500;600;700&family=JetBrains+Mono:wght@400;500;700&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="/css/vora.css">
+  <style>
+    .fwrap { max-width: 720px; margin: 0 auto; padding: 28px 16px 60px; position: relative; z-index: 1; }
+    .fhead { display: flex; align-items: center; justify-content: space-between; margin-bottom: 34px; }
+    .hero h1 { font-size: clamp(32px, 6vw, 52px); line-height: .95; letter-spacing: -0.05em; margin: 14px 0 12px; font-weight: 600; }
+    .hero p { color: var(--muted); font-size: 16px; margin: 0 0 26px; max-width: 560px; }
+    .q { display: grid; gap: 8px; }
+    .q > b { font-size: 15px; font-weight: 500; }
+    .q > b i { color: var(--lime); font-style: normal; }
+    .opt { display: flex; gap: 10px; flex-wrap: wrap; }
+    .opt label { display: flex; gap: 8px; align-items: center; border: 1px solid var(--line-2); border-radius: 999px; padding: 9px 16px; cursor: pointer; transition: border-color .2s, background .2s; }
+    .opt label:has(input:checked) { border-color: var(--lime); background: var(--lime-soft); color: var(--lime); }
+    .consent { border: 1px solid var(--line-2); border-radius: 18px; padding: 14px 16px; background: rgba(204,255,0,0.03); }
+    .ok { text-align: center; padding: 40px 20px; }
+    .ok .big { width: 72px; height: 72px; border-radius: 22px; background: var(--lime); color: #000; display: grid; place-items: center; font-size: 36px; margin: 0 auto 18px; box-shadow: 0 0 50px rgba(204,255,0,.35); }
+    .hp { position: absolute; left: -5000px; }
+    .fwrap input, .fwrap textarea { font-size: 16px; padding: 12px 14px; }
+  </style>
+</head>
+<body class="grid-bg">
+  <div class="glow a"></div><div class="glow b"></div>
+  <div class="fwrap">
+    <header class="fhead">
+      <a href="https://vorapi.com.br" class="brand" style="padding:0;text-decoration:none;color:inherit"><div class="logo">V</div><div><b>Vora</b><small>Propriedade Industrial</small></div></a>
+      <div class="sys-tag"><span class="dot pulse"></span>Brasil · Online</div>
+    </header>
+    <section class="hero" id="hero">
+      <div class="sys-tag"><span class="dot"></span>Análise de viabilidade · INPI</div>
+      <h1>Sua marca está <span class="grad">protegida?</span></h1>
+      <p>Preencha em menos de 2 minutos. Nossa equipe faz a análise detalhada e urgente da sua marca em todo o território nacional e te retorna pelo WhatsApp.</p>
+    </section>
+    <form id="form" class="card stack" style="gap:20px;padding:26px" novalidate>
+      <input class="hp" name="website" tabindex="-1" autocomplete="off" aria-hidden="true">
+      <label class="q"><b>Nome <i>*</i></b><input name="nome" required autocomplete="name" placeholder="Seu nome"></label>
+      <label class="q"><b>Nome da Marca <i>*</i></b><input name="marca" required placeholder="Como sua marca se chama"></label>
+      <div class="q"><b>Existe logomarca?</b>
+        <div class="opt"><label><input type="radio" name="temLogo" value="sim"> Sim</label><label><input type="radio" name="temLogo" value="nao" checked> Não</label></div>
+        <div id="logo-box" hidden><input type="file" name="logo" accept="image/*"><small class="faint">Opcional · imagem até 3 MB</small></div>
+      </div>
+      <label class="q"><b>Sua marca existe há quanto tempo?</b><input name="tempoMarca" placeholder="Ex.: 2 anos"></label>
+      <div class="grid g2">
+        <label class="q"><b>E-mail <i>*</i></b><input name="email" type="email" required autocomplete="email" placeholder="voce@email.com"></label>
+        <label class="q"><b>Telefone / WhatsApp <i>*</i></b><input name="telefone" type="tel" required value="+55 " autocomplete="tel"></label>
+      </div>
+      <div class="q"><b>Você é</b>
+        <div class="opt"><label><input type="radio" name="tipoPessoa" value="PF" checked> Pessoa Física</label><label><input type="radio" name="tipoPessoa" value="PJ"> Pessoa Jurídica</label></div>
+        <input name="cnpj" id="cnpj" placeholder="Nº do CNPJ (opcional)" hidden inputmode="numeric">
+      </div>
+      <label class="q"><b>Localidade <i>*</i></b><input name="localidade" required placeholder="Cidade, Estado, País"></label>
+      <label class="q"><b>Endereço</b><input name="endereco" placeholder="Opcional" autocomplete="street-address"></label>
+      <label class="q"><b>Descreva aqui um pouco do seu serviço ou do seu produto <i>*</i></b>
+        <textarea name="descricao" rows="5" required placeholder="Fale aqui um pouco mais do que você vende (produto ou serviço) e o meio pelo qual você realiza as vendas. Exemplo: Olá, tenho uma loja de roupa na cidade de Recife, vendo por meio da loja física em Recife, nas redes sociais e na loja online (site)."></textarea></label>
+      <label class="consent chk"><input type="checkbox" name="consentimento" required>
+        <span>Estou de acordo que a equipe da <b>Vora Propriedade Industrial</b> realize a <b>Análise detalhada e urgente da minha Marca em todo o território nacional</b> e entre em contato pelo e-mail e WhatsApp informados para me informar sobre os reais riscos e a viabilidade da minha Marca, em conformidade com a <b>LGPD</b> (Lei nº 13.709/2018). <i class="lime">*</i></span></label>
+      <button class="btn neon" style="padding:14px 22px;font-size:15px" id="enviar">Quero minha análise →</button>
+      <p class="faint small" style="margin:0">🔒 Seus dados são usados apenas para este atendimento e tratados conforme a LGPD.</p>
+    </form>
+    <div id="ok" class="card ok" hidden>
+      <div class="big">✓</div>
+      <h2 style="font-size:26px;letter-spacing:-.03em;margin:0 0 8px">Recebemos sua solicitação!</h2>
+      <p class="muted">Nossa equipe técnica já vai iniciar a pesquisa da sua marca no INPI. Em breve você recebe o resultado no WhatsApp.</p>
+      <a id="wa" class="btn neon" hidden target="_blank" rel="noopener">Falar agora no WhatsApp</a>
+    </div>
+  </div>
+  <script type="module" src="/js/formulario.js"></script>
+</body>
+</html>
