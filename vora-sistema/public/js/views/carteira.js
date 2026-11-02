@@ -150,11 +150,11 @@ async function novoDespacho(p, cfg) {
     acoes: [{ label: 'Cancelar', valor: null }, { label: 'Salvar', cls: 'neon', onClick: (b) => { const x = lerForm(b); if (!/^\d{4}$/.test(x.rpi) || !x.despacho) { toast('Informe RPI (4 dígitos) e despacho.', true); return false; } return x; } }],
   });
   if (!d) return;
-  const fase = faseDoDespacho(d.despacho) || p.fase;
+  const fase = faseDoDespacho(d.despacho, d.codigo) || p.fase;
   await store.patch('processos', p.id, { despachos: [...(p.despachos || []), d], situacao: d.despacho, fase, ultimaRpi: d.rpi, atualizacaoPendente: true });
-  const regra = regraPorDespacho(`${d.despacho} ${d.complemento}`, cfg.regrasPrazo || REGRAS_PADRAO, 'proprio');
-  if (regra?.dias) {
-    await store.save('prazos', { processoId: p.id, clienteId: p.clienteId || '', numero: p.numero, marca: p.marca, tipo: regra.id, tipoNome: regra.nome, rpi: d.rpi, dataPublicacao: d.data, dias: regra.dias, dataFatal: calcularPrazo(d.data, regra.dias, cfg.feriadosExtras || []), despacho: d.despacho, status: 'revisar', origem: 'manual' });
+  const regra = regraPorDespacho(`${d.despacho} ${d.complemento}`, cfg.regrasPrazo || REGRAS_PADRAO, 'proprio', d.codigo);
+  if (regra) {
+    await store.save('prazos', { processoId: p.id, clienteId: p.clienteId || '', numero: p.numero, marca: p.marca, tipo: regra.id, tipoNome: regra.nome, rpi: d.rpi, dataPublicacao: d.data, dias: regra.dias, dataFatal: regra.dias ? calcularPrazo(d.data, regra.dias, cfg.feriadosExtras || []) : '', despacho: d.despacho, status: 'revisar', origem: 'manual' });
     toast(`Prazo “${regra.nome}” criado para revisão.`);
   } else toast('Despacho registrado.');
 }

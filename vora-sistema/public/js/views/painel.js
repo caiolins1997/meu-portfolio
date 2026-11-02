@@ -13,7 +13,7 @@ export async function render(el) {
   const aguardCaio = analises.filter(a => a.status === 'aguardando_caio');
   const revisar = analises.filter(a => a.status === 'revisao_colaborador');
   const prazosAtivos = prazos.filter(p => !['cumprido', 'cancelado'].includes(p.status)).sort((a, b) => String(a.dataFatal).localeCompare(String(b.dataFatal)));
-  const urgentes = prazosAtivos.filter(p => (diasRestantes(p.dataFatal) ?? 99) <= 15);
+  const urgentes = prazosAtivos.filter(p => (diasRestantes(p.dataFatal) ?? 0) <= 15);
   const colNovas = colid.filter(c => c.status === 'detectada');
   const recebido = vendas.flatMap(v => v.parcelas || []).filter(p => p.pago && String(p.dataPago).startsWith(mes)).reduce((s, p) => s + +p.valor, 0);
   const prontos = clientes.filter(c => c.etapa === 'pronto');

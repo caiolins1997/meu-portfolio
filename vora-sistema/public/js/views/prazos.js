@@ -13,7 +13,7 @@ export async function render(el) {
   const regras = cfg.regrasPrazo || REGRAS_PADRAO;
   const extras = cfg.feriadosExtras || [];
   const ativos = prazos.filter(p => !['cumprido', 'cancelado'].includes(p.status)).sort((a, b) => String(a.dataFatal).localeCompare(String(b.dataFatal)));
-  const venc7 = ativos.filter(p => (diasRestantes(p.dataFatal) ?? 99) <= 7).length;
+  const venc7 = ativos.filter(p => (diasRestantes(p.dataFatal) ?? 0) <= 7).length;
   el.innerHTML = cabecalho('Prazos INPI', 'Contagem pela LPI (arts. 221–222: prazos contínuos, exclui o dia do começo e inclui o do vencimento; vencimento em dia sem expediente prorroga para o próximo dia útil). Prazos criados pela RPI entram como “a revisar”.',
     '<button class="btn neon" data-a="novo">+ Prazo</button>', `Módulo 5 · ${ativos.length} ativos · ${venc7} em até 7 dias`)
     + tabs([['lista', 'Agenda de prazos'], ['kanban', 'Kanban de execução'], ['calc', 'Calculadora & regras']], aba) + '<div id="c"></div>';

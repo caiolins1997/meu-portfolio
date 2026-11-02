@@ -83,7 +83,17 @@ export function levenshtein(a, b) {
   return prev[b.length];
 }
 
-// Compara a marca do cliente com a marca de terceiro.
+// Termos genéricos/descritivos frequentes em marcas: sozinhos não geram alerta (o elemento distintivo é o resto da marca).
+const GENERICOS = new Set([
+  'wear', 'beer', 'cerveja', 'life', 'store', 'shop', 'café', 'cafe', 'bar', 'hub', 'studio', 'estúdio', 'house', 'casa', 'home',
+  'club', 'clube', 'food', 'burger', 'pizza', 'pizzaria', 'grill', 'spa', 'beauty', 'beleza', 'fit', 'brasil', 'brazil', 'grupo',
+  'group', 'center', 'centro', 'moda', 'fashion', 'beach', 'sport', 'esporte', 'active', 'oficial', 'premium', 'gourmet', 'natural',
+  'orgânico', 'soluções', 'serviços', 'consultoria', 'tech', 'digital', 'online', 'oficina', 'loja', 'lojas', 'restaurante',
+  'distribuidora', 'comércio', 'indústria', 'company', 'mall', 'express', 'plus', 'pro', 'max', 'iluminação', 'hotel', 'hotéis',
+  'suítes', 'resto', 'barbearia', 'news', 'notícias', 'jornal', 'luxury', 'especial', 'especiais',
+].map(dobrar));
+
+// Compara a marca do cliente com a marca de terceiro, palavra a palavra (calibrado com a RPI 2912 real).
 // Retorna { score 0-100, motivo }.
 export function similaridade(marcaCliente, marcaTerceiro) {
   const A = dobrar(marcaCliente), B = dobrar(marcaTerceiro);
@@ -91,20 +101,36 @@ export function similaridade(marcaCliente, marcaTerceiro) {
   if (A === B) return { score: 100, motivo: 'Idêntica / foneticamente idêntica' };
   let best = { score: 0, motivo: '' };
   const up = (score, motivo) => { if (score > best.score) best = { score: Math.round(score), motivo }; };
-  if (A.length >= 4 && B.includes(A)) up(90, 'Reproduz integralmente a marca do cliente');
-  if (B.length >= 4 && A.includes(B)) up(78, 'Está contida na marca do cliente');
-  const ta = tokens(marcaCliente).map(dobrar).filter(t => t.length >= 4);
-  const tb = tokens(marcaTerceiro).map(dobrar).filter(t => t.length >= 3);
-  for (const x of ta) for (const y of tb) {
-    if (x === y) up(85, 'Elemento nominativo coincidente');
-    else if (x.length >= 5 && y.length >= 5) {
+  const ta = tokens(marcaCliente).map(dobrar).filter(Boolean);
+  const tb = tokens(marcaTerceiro).map(dobrar).filter(Boolean);
+  // elemento distintivo = palavra que não é termo genérico/descritivo do mercado
+  const distintivos = ta.filter(t => t.length >= 3 && !GENERICOS.has(t));
+  // todas as palavras da marca do cliente aparecem, inteiras, na marca do terceiro
+  if (distintivos.length && ta.every(x => tb.includes(x))) up(ta.length > 1 || A.length >= 5 ? 92 : 88, 'Reproduz integralmente a marca do cliente');
+  for (const x of ta.filter(t => t.length >= 4)) for (const y of tb) {
+    const generico = GENERICOS.has(x);
+    if (x === y) { up(generico ? 60 : 85, generico ? 'Coincide só em termo genérico' : 'Elemento nominativo coincidente'); continue; }
+    if (generico) continue;
+    // marca embutida em palavra composta (ex.: EVERLUMINA) — só para radicais longos, evita BARRA × GUANABARA
+    if (x.length >= 5 && y.length > x.length && (y.startsWith(x) || y.endsWith(x)) && y.length - x.length <= 6) up(82, 'Incorpora a marca do cliente');
+    // variação de grafia/flexão (ex.: LUMINA × LUMINAS); palavras curtas exigem semelhança maior (evita BARRA × BARÃO)
+    if (y.length >= 4) {
       const r = 1 - levenshtein(x, y) / Math.max(x.length, y.length);
-      if (r >= 0.8) up(70 + r * 10, 'Elemento nominativo semelhante');
+      if (r >= (Math.min(x.length, y.length) >= 5 ? 0.8 : 0.9)) up(70 + r * 12, 'Elemento nominativo semelhante');
     }
   }
   const ratio = 1 - levenshtein(A, B) / Math.max(A.length, B.length);
-  if (ratio >= 0.7 && Math.min(A.length, B.length) >= 3) up(ratio * 100, 'Semelhança fonética/gráfica');
+  if (ratio >= 0.78 && Math.min(A.length, B.length) >= 4) up(ratio * 100, 'Semelhança fonética/gráfica do conjunto');
   return best;
+}
+
+// Classes de Nice com afinidade mercadológica usual (vigilância prioriza mesma classe ou afim).
+const AFINS = [[29, 30, 31, 32, 33, 43], [3, 5, 44], [14, 18, 25, 26], [9, 38, 41, 42], [11, 20, 21, 27], [16, 35, 41]];
+export function classesAfins(a, b) {
+  const x = +a, y = +b;
+  if (x === y) return 'mesma';
+  if (x === 35 || y === 35) return 'afim'; // comércio de produtos de qualquer classe
+  return AFINS.some(g => g.includes(x) && g.includes(y)) ? 'afim' : null;
 }
 
 export function limparRazaoSocial(s = '') {

@@ -89,7 +89,7 @@ export function badgeViab(v) {
 }
 
 export function badgePrazo(dias) {
-  if (dias === null || dias === undefined) return '';
+  if (dias === null || dias === undefined) return '<span class="badge amber">conferir data</span>';
   if (dias < 0) return `<span class="badge red">vencido há ${-dias}d</span>`;
   if (dias <= 7) return `<span class="badge red">${dias}d</span>`;
   if (dias <= 15) return `<span class="badge amber">${dias}d</span>`;

@@ -3,8 +3,8 @@
 //                                       (b) detecta colidências com as marcas monitoradas.
 import zlib from 'node:zlib';
 import { listar, criar, atualizar, getConfig, transacao, registrarLog } from './db.js';
-import { similaridade, dobrar } from '../public/js/lib/texto.js';
-import { calcularPrazo, regraPorDespacho, faseDoDespacho, REGRAS_PADRAO, parseData, iso } from '../public/js/lib/prazos.js';
+import { similaridade, dobrar, classesAfins } from '../public/js/lib/texto.js';
+import { calcularPrazo, regraPorDespacho, faseDoDespacho, REGRAS_PADRAO, CODIGOS_OPOSICAO, parseData, iso } from '../public/js/lib/prazos.js';
 
 const attr = (tag, nome) => {
   const m = tag.match(new RegExp(`${nome}="([^"]*)"`));
@@ -118,40 +118,44 @@ export function processarRpi(xml, { origem = 'upload', usuario = 'sistema' } = {
           if (hist.some(h => h.rpi === numeroRpi && h.codigo === d.codigo)) continue;
           hist.push({ rpi: numeroRpi, data: dataRpi, codigo: d.codigo, despacho: d.nome, complemento: d.complemento });
           mudou = true;
-          const regra = regraPorDespacho(`${d.nome} ${d.complemento}`, regras, 'proprio');
-          if (regra && regra.dias) {
+          const regra = regraPorDespacho(`${d.nome} ${d.complemento}`, regras, 'proprio', d.codigo);
+          if (regra) {
             criar('prazos', {
               processoId: proprio.id, clienteId: proprio.clienteId || '', numero: pr.numero, marca: proprio.marca,
               tipo: regra.id, tipoNome: regra.nome, rpi: numeroRpi, dataPublicacao: dataRpi, dias: regra.dias,
-              dataFatal: calcularPrazo(dataRpi, regra.dias, extras), despacho: d.nome, status: 'revisar', responsavel: '', origem: 'RPI automática',
+              dataFatal: regra.dias ? calcularPrazo(dataRpi, regra.dias, extras) : '', despacho: d.nome, status: 'revisar', responsavel: '', origem: 'RPI automática',
             }, usuario);
             res.prazosCriados++;
           }
         }
         if (mudou) {
           const ultimo = pr.despachos[pr.despachos.length - 1];
-          const fase = faseDoDespacho(ultimo?.nome || '') || proprio.fase;
+          const fase = pr.despachos.reduce((f, d) => faseDoDespacho(d.nome, d.codigo) || f, proprio.fase);
           atualizar('processos', proprio.id, { despachos: hist, situacao: ultimo?.nome || proprio.situacao, fase, ultimaRpi: numeroRpi, atualizacaoPendente: true }, usuario);
           res.atualizacoes++;
         }
         continue;
       }
       // (b) vigilância: pedidos de terceiros publicados para oposição
-      const pubOpos = pr.despachos.some(d => d.codigo === 'IPAS009' || /publica[cç][aã]o de pedido.*oposi/i.test(d.nome));
+      const pubOpos = pr.despachos.some(d => CODIGOS_OPOSICAO.includes(d.codigo) || /publica[cç][aã]o de pedido.*oposi/i.test(d.nome));
       if (!pubOpos || !pr.marca) continue;
       res.publicacoesOposicao++;
       for (const mm of monitoradas) {
         const s = similaridade(mm.marca, pr.marca);
         if (s.score < limiar) continue;
+        // princípio da especialidade: com classes conhecidas, só alerta em classe igual/afim (ou marca idêntica)
+        const relacoes = mm.classes.length ? pr.classes.flatMap(c => mm.classes.map(k => classesAfins(k, c))) : [];
+        const relacao = relacoes.includes('mesma') ? 'mesma' : relacoes.includes('afim') ? 'afim' : null;
+        if (mm.classes.length && pr.classes.length && !relacao && s.score < 100) continue;
         const chave = `${numeroRpi}|${pr.numero}|${mm.marca}`;
         if (jaColid.has(chave)) continue;
         jaColid.add(chave);
-        const mesmaClasse = mm.classes.length ? pr.classes.some(c => mm.classes.some(k => +k === +c)) : null;
+        const mesmaClasse = mm.classes.length ? relacao === 'mesma' : null;
         criar('colidencias', {
           rpi: numeroRpi, dataRpi, processoTerceiro: pr.numero, marcaTerceiro: pr.marca, apresentacao: pr.apresentacao,
           classes: pr.classes.join(', '), especificacao: pr.especificacao, titular: pr.titulares.join('; '), procurador: pr.procurador,
           despacho: pr.despachos.map(d => d.nome).join(' | '), marcaCliente: mm.marca, clienteId: mm.clienteId, processoId: mm.processoId || '',
-          score: s.score, motivo: s.motivo, mesmaClasse, prazoOposicao: calcularPrazo(dataRpi, 60, extras), status: 'detectada',
+          score: s.score, motivo: s.motivo, mesmaClasse, classeAfim: relacao === 'afim', prazoOposicao: calcularPrazo(dataRpi, 60, extras), status: 'detectada',
         }, usuario);
         res.colidencias++;
       }

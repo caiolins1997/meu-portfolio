@@ -2,19 +2,27 @@
 // LPI Art. 221 (prazos contínuos) e Art. 222 (exclui o dia do começo e inclui o do vencimento).
 // Vencimento em dia sem expediente prorroga para o 1º dia útil seguinte.
 // ATENÇÃO: os prazos gerados entram como "a revisar" e devem ser conferidos pela equipe.
+//
+// As regras usam primeiro os CÓDIGOS de despacho da RPI (IPASxxx), calibrados com a RPI 2912 real,
+// e só depois o texto (gatilho), útil para despachos lançados manualmente.
+// dias = 0 → o prazo é criado sem data fatal, para a equipe conferir no despacho.
 
 export const REGRAS_PADRAO = [
-  { id: 'manifestacao_oposicao', nome: 'Manifestação à oposição (Art. 158, §1º LPI)', dias: 60, aplica: 'proprio', gatilho: 'notifica[cç][aã]o de oposi|oposi[cç][aã]o.*(apresentada|interposta)' },
-  { id: 'exigencia', nome: 'Cumprimento de exigência (Art. 159 LPI)', dias: 60, aplica: 'proprio', gatilho: 'exig[eê]ncia' },
-  { id: 'recurso', nome: 'Recurso contra indeferimento (Art. 212 LPI)', dias: 60, aplica: 'proprio', gatilho: '^(?!.*aguardando).*indeferi' },
-  { id: 'contrarrazoes', nome: 'Contrarrazões a recurso de terceiro', dias: 60, aplica: 'proprio', gatilho: 'contrarraz|recurso.*(terceiro|interposto)' },
-  { id: 'manif_pan', nome: 'Manifestação ao PAN (Art. 170 LPI)', dias: 60, aplica: 'proprio', gatilho: 'nulidade' },
-  { id: 'caducidade_resp', nome: 'Resposta a pedido de caducidade (Art. 143, §2º LPI)', dias: 60, aplica: 'proprio', gatilho: 'caducidade' },
-  { id: 'oposicao', nome: 'Oposição contra terceiro (Art. 158 LPI)', dias: 60, aplica: 'terceiro', gatilho: 'publica[cç][aã]o de pedido.*oposi' },
-  { id: 'pan', nome: 'PAN contra registro de terceiro (Art. 169 LPI)', dias: 180, aplica: 'terceiro', gatilho: '' },
-  { id: 'prorrogacao', nome: 'Prorrogação do registro (Art. 133 LPI)', dias: 0, aplica: 'proprio', gatilho: '' },
-  { id: 'outro', nome: 'Outro prazo (manual)', dias: 60, aplica: 'proprio', gatilho: '' },
+  { id: 'manifestacao_oposicao', nome: 'Manifestação à oposição (Art. 158, §1º LPI)', dias: 60, aplica: 'proprio', codigos: ['IPAS423'], gatilho: 'notifica[cç][aã]o de oposi' },
+  { id: 'exigencia', nome: 'Cumprimento de exigência de mérito (Art. 159 LPI)', dias: 60, aplica: 'proprio', codigos: ['IPAS136', 'IPAS267', 'IPAS772'], gatilho: 'exig[eê]ncia de m[eé]rito' },
+  { id: 'exigencia_formal', nome: 'Exigência formal / de pagamento (conferir prazo no despacho)', dias: 0, aplica: 'proprio', codigos: ['IPAS005', 'IPAS395', 'IPAS089'], gatilho: 'exig[eê]ncia (formal|de pagamento)' },
+  { id: 'recurso', nome: 'Recurso contra indeferimento (Art. 212 LPI)', dias: 60, aplica: 'proprio', codigos: ['IPAS024', 'IPAS658', 'IPAS271', 'IPAS774', 'IPAS337'], gatilho: '^indeferimento' },
+  { id: 'contrarrazoes', nome: 'Manifestação sobre recurso de terceiro (Art. 213 LPI)', dias: 60, aplica: 'proprio', codigos: ['IPAS360'], gatilho: 'notifica[cç][aã]o de recurso' },
+  { id: 'manif_pan', nome: 'Manifestação ao PAN (Art. 170 LPI)', dias: 60, aplica: 'proprio', codigos: ['IPAS400'], gatilho: 'instaura[cç][aã]o de processo de nulidade' },
+  { id: 'caducidade_resp', nome: 'Resposta a pedido de caducidade (Art. 143, §2º LPI)', dias: 60, aplica: 'proprio', codigos: ['IPAS338'], gatilho: 'notifica[cç][aã]o de caducidade' },
+  { id: 'oposicao', nome: 'Oposição contra terceiro (Art. 158 LPI)', dias: 60, aplica: 'terceiro', codigos: ['IPAS009', 'IPAS421'], gatilho: 'publica[cç][aã]o de pedido.*oposi|republica[cç][aã]o de pedido' },
+  { id: 'pan', nome: 'PAN contra registro de terceiro (Art. 169 LPI)', dias: 180, aplica: 'terceiro', codigos: [], gatilho: '' },
+  { id: 'prorrogacao', nome: 'Prorrogação do registro (Art. 133 LPI)', dias: 0, aplica: 'proprio', codigos: [], gatilho: '' },
+  { id: 'outro', nome: 'Outro prazo (manual)', dias: 60, aplica: 'proprio', codigos: [], gatilho: '' },
 ];
+
+// Despachos que abrem prazo de oposição para terceiros (vigilância).
+export const CODIGOS_OPOSICAO = ['IPAS009', 'IPAS421'];
 
 const pad = n => String(n).padStart(2, '0');
 export const iso = d => `${d.getFullYear()}-${pad(d.getMonth() + 1)}-${pad(d.getDate())}`;
@@ -71,24 +79,49 @@ export function diasRestantes(dataFatal, hoje = new Date()) {
   return Math.round((f - h) / 86400000);
 }
 
-export function regraPorDespacho(texto, regras = REGRAS_PADRAO, aplica = 'proprio') {
+export function regraPorDespacho(texto, regras = REGRAS_PADRAO, aplica = 'proprio', codigo = '') {
+  const doTipo = regras.filter(r => r.aplica === aplica);
+  const cod = String(codigo || '').trim().toUpperCase();
+  if (cod) {
+    const porCodigo = doTipo.find(r => (r.codigos || []).includes(cod));
+    if (porCodigo) return porCodigo;
+  }
   const t = String(texto || '');
-  return regras.find(r => r.aplica === aplica && r.gatilho && new RegExp(r.gatilho, 'i').test(t)) || null;
+  return doTipo.find(r => r.gatilho && new RegExp(r.gatilho, 'i').test(t)) || null;
 }
 
-// Mapeia o texto do despacho para a fase do Kanban da Carteira INPI.
-export function faseDoDespacho(texto = '') {
+// Fase do Kanban da Carteira INPI pelo código do despacho (RPI) — tabela calibrada com a RPI 2912.
+const FASE_POR_CODIGO = {
+  publicado: ['IPAS009', 'IPAS421'],
+  oposicao: ['IPAS423'],
+  exigencia: ['IPAS136', 'IPAS267', 'IPAS772', 'IPAS005', 'IPAS395', 'IPAS089'],
+  sobrestado: ['IPAS142', 'IPAS771'],
+  deferido: ['IPAS029', 'IPAS768', 'IPAS781', 'IPAS237'],
+  vigor: ['IPAS158', 'IPAS770'],
+  indeferido: ['IPAS024', 'IPAS658', 'IPAS774'],
+  recurso: ['IPAS360'],
+  arquivado: ['IPAS161', 'IPAS304', 'IPAS139', 'IPAS106', 'IPAS047', 'IPAS033', 'IPAS112', 'IPAS091', 'IPAS289', 'IPAS291', 'IPAS773', 'IPAS409', 'IPAS530'],
+};
+
+// Retorna a nova fase, ou null quando o despacho não muda a fase (ex.: petições, certidões, anotações).
+export function faseDoDespacho(texto = '', codigo = '') {
+  const cod = String(codigo || '').trim().toUpperCase();
+  if (cod) {
+    for (const [fase, cods] of Object.entries(FASE_POR_CODIGO)) if (cods.includes(cod)) return fase;
+    if (/^IPAS\d+$/.test(cod)) return null;
+  }
   const t = texto.toLowerCase();
+  if (/peti[cç][aã]o|certid[aã]o|segunda via|c[oó]pia oficial|anota[cç][aã]o|designa[cç][aã]o/.test(t)) return null;
   if (/sobrest/.test(t)) return 'sobrestado';
-  if (/arquiv|extin/.test(t)) return 'arquivado';
-  if (/recurso/.test(t)) return 'recurso';
+  if (/arquiv|extin|inexistente|cancelamento de of[ií]cio|nulo o registro/.test(t)) return 'arquivado';
+  if (/notifica[cç][aã]o de recurso|aguardando.*recurso/.test(t)) return 'recurso';
   if (/indeferi/.test(t)) return 'indeferido';
   if (/exig/.test(t)) return 'exigencia';
-  if (/notifica[cç][aã]o de oposi|oposi[cç][aã]o.*apresentada/.test(t)) return 'oposicao';
-  if (/publica[cç][aã]o de pedido|prazo de (apresenta[cç][aã]o de )?oposi/.test(t)) return 'publicado';
+  if (/notifica[cç][aã]o de oposi/.test(t)) return 'oposicao';
+  if (/publica[cç][aã]o de pedido|republica[cç][aã]o de pedido|prazo de (apresenta[cç][aã]o de )?oposi/.test(t)) return 'publicado';
   if (/m[eé]rito/.test(t)) return 'merito';
-  if (/concess|em vigor|concedid|prorroga/.test(t)) return 'vigor';
-  if (/deferi/.test(t)) return 'deferido';
+  if (/concess[aã]o de registro|em vigor|concedid|prorroga/.test(t)) return 'vigor';
+  if (/deferimento do pedido|recurso provido.*deferimento/.test(t)) return 'deferido';
   if (/formal|admissib/.test(t)) return 'formal';
   return null;
 }

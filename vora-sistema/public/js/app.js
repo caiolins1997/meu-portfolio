@@ -111,7 +111,7 @@ async function atualizarBadges() {
     const [an, pr, co] = await Promise.all([store.list('analises', true), store.list('prazos', true), store.list('colidencias', true)]);
     const set = (id, n) => { const b = document.getElementById(id); if (b) { b.textContent = n; b.hidden = !n; b.className = 'badge n ' + (n ? 'lime' : ''); } };
     set('b-analises', an.filter(a => a.status === (isAdmin() ? 'aguardando_caio' : 'revisao_colaborador')).length);
-    set('b-prazos', pr.filter(p => !['cumprido', 'cancelado'].includes(p.status) && (diasRestantes(p.dataFatal) ?? 99) <= 7).length);
+    set('b-prazos', pr.filter(p => !['cumprido', 'cancelado'].includes(p.status) && (diasRestantes(p.dataFatal) ?? 0) <= 7).length);
     set('b-colid', co.filter(c => c.status === 'detectada').length);
   } catch { /* badges são opcionais */ }
 }
