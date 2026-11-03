@@ -9,9 +9,9 @@ const LIMITE = 25 * 1048576;
 export function renderImportacao(box) {
   let pacote = null, arquivos = new Map();
   box.innerHTML = `<div class="card"><h2>Importar carteira existente</h2>
-    <p class="sub">Use o pacote <b>importacao-clientes-vora.json</b> (pasta Vora Propriedade Intectual no Drive) e selecione a pasta <b>A - Clientes</b> do Google Drive. Clientes já cadastrados (mesma marca e mesmo CPF/CNPJ, ou importados antes) são ignorados.</p>
-    <div class="grid g2"><label class="f"><span>1. Pacote de importação (.json)</span><input type="file" accept=".json,application/json" id="pj"></label>
-    <label class="f"><span>2. Pasta "A - Clientes" do Google Drive</span><input type="file" id="pd" webkitdirectory directory multiple></label></div>
+    <p class="sub">Clique em <b>Escolher pasta</b> e selecione a pasta <b>A - Clientes</b> do Google Drive (no computador: <span class="mono">G:\\Meu Drive\\Registro de Marca\\A - Clientes</span>). O pacote de importação já está dentro dela e é carregado sozinho. Clientes já cadastrados são ignorados.</p>
+    <div class="grid g2"><label class="f"><span>Pasta "A - Clientes" do Google Drive</span><input type="file" id="pd" webkitdirectory directory multiple></label>
+    <label class="f"><span>Opcional: pacote em outro lugar (.json)</span><input type="file" accept=".json,application/json" id="pj"></label></div>
     <div id="prev" style="margin-top:14px"></div></div>`;
   const prev = box.querySelector('#prev');
 
@@ -69,14 +69,20 @@ export function renderImportacao(box) {
       pacote = j; desenhar();
     } catch (er) { falha(er); }
   };
-  box.querySelector('#pd').onchange = (e) => {
+  box.querySelector('#pd').onchange = async (e) => {
     arquivos = new Map();
+    let achado = null;
     for (const f of e.target.files) {
       // webkitRelativePath começa pelo nome da pasta escolhida ("A - Clientes/..."): guardamos o caminho relativo a ela.
       const rel = f.webkitRelativePath.split('/').slice(1).join('/');
+      if (/^importacao-clientes-vora\.json$/i.test(rel)) { achado = f; continue; }
       if (rel && !/desktop\.ini$/i.test(rel)) arquivos.set(rel, f);
     }
-    toast(`${arquivos.size} arquivo(s) encontrados na pasta.`);
+    // O pacote fica dentro da própria pasta "A - Clientes": basta escolher a pasta.
+    if (achado && !pacote) {
+      try { const j = JSON.parse(await achado.text()); if (Array.isArray(j.clientes)) pacote = j; } catch (er) { falha(er); }
+    }
+    toast(`${arquivos.size} arquivo(s) encontrados na pasta${achado ? ' e pacote de importação carregado' : ''}.`);
     desenhar();
   };
 }

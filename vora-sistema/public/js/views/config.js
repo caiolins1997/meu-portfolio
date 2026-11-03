@@ -5,7 +5,9 @@ import { renderImportacao } from './importacao.js';
 
 let aba = 'equipe';
 
-export async function render(el) {
+export async function render(el, [abaLink] = []) {
+  // Permite link direto para uma aba: #/config/importar, #/config/equipe, #/config/empresa…
+  if (abaLink && ['equipe', 'empresa', 'comissao', 'importar', 'backup'].includes(abaLink)) aba = abaLink;
   if (!isAdmin()) { el.innerHTML = '<div class="card">Acesso restrito ao administrador.</div>'; return; }
   const cfg = await getConfig(true);
   el.innerHTML = cabecalho('Configurações', 'Equipe e acessos, dados da empresa usados nos documentos, metas de comissão, backup e auditoria.', '', 'Administração')
