@@ -65,7 +65,10 @@ function contrato(v, { permuta = false } = {}) {
   <h2>Cláusula 4ª — Da natureza da obrigação</h2>
   <p>4.1. A obrigação da CONTRATADA é <b>de meio</b>. A concessão do registro é ato exclusivo do INPI, não havendo garantia de deferimento. A análise de viabilidade reflete o banco de dados do INPI na data da pesquisa.</p>
   <h2>Cláusula 5ª — Da vigência e rescisão</h2>
-  <p>5.1. Este contrato vigora até a decisão final de primeira instância do pedido no INPI. Pode ser rescindido por qualquer das partes mediante aviso escrito, sendo devidos os honorários proporcionais aos serviços já executados; após o protocolo do pedido, os honorários da etapa de depósito não são reembolsáveis.</p>
+  <p>5.1. Este contrato vigora até a decisão final de primeira instância do pedido no INPI.</p>
+  <p>5.2. Contratado à distância, o(a) CONTRATANTE poderá desistir em até 7 (sete) dias da assinatura (art. 49 do CDC), <b>desde que a GRU ainda não tenha sido emitida</b>, com devolução dos valores pagos.</p>
+  <p>5.3. A emissão da GRU ocorre a pedido do(a) CONTRATANTE e marca o <b>início da execução dos serviços</b> (recolhimento das taxas federais, reserva de prioridade e preparo do protocolo). <b>Emitida a GRU, não há desistência</b>, e os valores pagos não são devolvidos.</p>
+  <p>5.4. Fora dessas hipóteses, o contrato pode ser rescindido por qualquer das partes mediante aviso escrito, sendo devidos os honorários proporcionais aos serviços já executados.</p>
   <h2>Cláusula 6ª — Da proteção de dados (LGPD)</h2>
   <p>6.1. As partes tratarão os dados pessoais envolvidos exclusivamente para a execução deste contrato e o cumprimento de obrigações legais, em conformidade com a Lei nº 13.709/2018 (LGPD), adotando medidas de segurança adequadas. O(A) CONTRATANTE pode solicitar acesso, correção ou eliminação de seus dados pelos canais oficiais da CONTRATADA.</p>
   <h2>Cláusula 7ª — Da divulgação institucional</h2>

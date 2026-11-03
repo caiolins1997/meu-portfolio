@@ -15,7 +15,13 @@ export async function render(el, [modeloId, clienteId, colidId]) {
       <div class="card"><h2>Relatórios automáticos</h2><div class="stack small muted">
         <div>2.1 Relatório Cadastral → <a href="#/clientes">Cliente</a> › Relatório cadastral</div><div>2. Relatório e Parecer de Viabilidade → <a href="#/analises">Análises</a></div>
         <div>12.1 Relatório mensal com Resumo de Vigilância → <a href="#/carteira">Carteira INPI</a></div><div>12.2.2 Alerta de colidência timbrado → <a href="#/vigilancia">Vigilância RPI</a></div>
-        <div>7.1 Cláusula de prova social → já incluída nos contratos 4.0/4.1 (Cláusula 7ª)</div></div></div></div>
+        <div>7.1 Cláusula de prova social → já incluída nos contratos 4.0/4.1 (Cláusula 7ª)</div></div></div>
+      <div class="card"><h2>Cópias em PDF e Word</h2><div class="stack small muted">
+        <div>Esta tela é a <b>versão oficial e sempre atualizada</b> de cada modelo.</div>
+        <div>Cópias em PDF (timbrado) e Word (.docx editável), organizadas por grupo, ficam em:</div>
+        <div class="mono">Google Drive › Registro de Marca › Vora Propriedade Intectual › Modelos</div>
+        <div class="mono">Computador › Documentos › Registro de Marca › Vora Propriedade Intectual › Modelos</div>
+        <div>Quando um modelo for alterado aqui, as cópias são regeradas.</div></div></div></div>
     <div class="card" style="margin-top:16px"><h2>Pasta Modelo no Google Drive</h2><p class="sub">Estrutura padrão de cada cliente. Use o script abaixo no <a href="https://script.google.com/" target="_blank" rel="noopener">Google Apps Script</a> para criar a pasta de um cliente com todas as subpastas de uma vez.</p>
       <div class="grid g2"><div class="stack">${PASTAS.map(([id, n]) => `<div class="file-row" style="${id.includes('.') ? 'margin-left:24px' : ''}">📁 ${esc(n)}</div>`).join('')}</div>
       <div><pre class="msg-text mono small" style="max-height:300px;overflow:auto" id="gs">${esc(appsScript())}</pre><button class="btn sm" id="cp">Copiar script</button></div></div></div>`;
