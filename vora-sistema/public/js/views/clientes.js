@@ -45,6 +45,7 @@ async function detalhe(el, id) {
     `<a class="btn" href="#/clientes">← Clientes</a><button class="btn" data-a="msg">Mensagem</button>
      ${an ? `<a class="btn" href="#/analises/${an.id}">Abrir análise</a>` : '<button class="btn" data-a="analise">Iniciar análise</button>'}`,
     `Cliente · ${esc(CANAIS[c.origem] || c.origem || '')}`)
+    + ((c.pendenciasImportacao || []).length ? `<div class="card" style="margin-bottom:12px;border-color:rgba(245,183,0,.4)"><b class="small">Pendências da importação da carteira</b><div class="stack small muted" style="margin-top:6px">${c.pendenciasImportacao.map(p => `<div>• ${esc(p)}</div>`).join('')}</div>${c.pastaDrive ? `<div class="faint tiny" style="margin-top:6px">Pasta de origem no Drive: ${esc(c.pastaDrive)}</div>` : ''}</div>` : '')
     + tabs(ABAS, abaAtual) + '<div id="aba"></div>';
   el.querySelectorAll('[data-tab]').forEach(b => b.onclick = () => { abaAtual = b.dataset.tab; detalhe(el, id); });
   el.querySelector('[data-a=msg]').onclick = () => enviarMensagem({ cliente: c, onEnviado: (m) => registrarHistorico(c, `Mensagem ${m.codigo} enviada`) });

@@ -1,6 +1,7 @@
 // Configurações (somente administrador): equipe, dados da empresa, metas de comissão, backup e auditoria.
 import { BASE, api, esc, tabs, campos, lerForm, toast, falha, getConfig, saveConfig, isAdmin, modal, state, dataHora } from '../core.js';
 import { cabecalho } from '../app.js';
+import { renderImportacao } from './importacao.js';
 
 let aba = 'equipe';
 
@@ -8,7 +9,7 @@ export async function render(el) {
   if (!isAdmin()) { el.innerHTML = '<div class="card">Acesso restrito ao administrador.</div>'; return; }
   const cfg = await getConfig(true);
   el.innerHTML = cabecalho('Configurações', 'Equipe e acessos, dados da empresa usados nos documentos, metas de comissão, backup e auditoria.', '', 'Administração')
-    + tabs([['equipe', 'Equipe & acessos'], ['empresa', 'Empresa'], ['comissao', 'Comissões & metas'], ['backup', 'Backup & auditoria']], aba) + '<div id="c"></div>';
+    + tabs([['equipe', 'Equipe & acessos'], ['empresa', 'Empresa'], ['comissao', 'Comissões & metas'], ['importar', 'Importar carteira'], ['backup', 'Backup & auditoria']], aba) + '<div id="c"></div>';
   el.querySelectorAll('[data-tab]').forEach(b => b.onclick = () => { aba = b.dataset.tab; render(el); });
   const box = el.querySelector('#c');
 
@@ -61,6 +62,8 @@ export async function render(el) {
       await saveConfig({ comissao: { ...c, faixas, metaTrimestral: +d.metaTrimestral, bonusTrimestral: +d.bonusTrimestral, tetoPct: +d.tetoPct, taxaPadraoAsaas: +d.taxaPadraoAsaas, regraBoleto: d.regraBoleto } });
       toast('Regras salvas.');
     };
+  } else if (aba === 'importar') {
+    renderImportacao(box);
   } else {
     const log = await api('/api/log');
     box.innerHTML = `<div class="card"><h2>Backup</h2><p class="sub">Baixe uma cópia completa dos dados (JSON). Os arquivos enviados ficam no volume do servidor.</p><a class="btn neon" href="${BASE}/api/backup">Baixar backup agora</a></div>
