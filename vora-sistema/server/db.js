@@ -2,7 +2,7 @@ import { DatabaseSync } from 'node:sqlite';
 import fs from 'node:fs';
 import path from 'node:path';
 import crypto from 'node:crypto';
-import { MENSAGENS, SERVICOS, CONFIG, POSTS_IDEIAS } from '../public/js/lib/seeds.js';
+import { MENSAGENS, SERVICOS, SERVICOS_VERSAO, SERVICOS_EXEMPLO_V1, CONFIG, POSTS_IDEIAS } from '../public/js/lib/seeds.js';
 
 export const DATA_DIR = process.env.DATA_DIR || path.resolve('data');
 export const UPLOAD_DIR = path.join(DATA_DIR, 'uploads');
@@ -133,6 +133,23 @@ function completarConfig() {
   if (mudou) atualizar('config', 'principal', patch);
 }
 
+// Troca a tabela de exemplo da implantação pela tabela de honorários pesquisada, só se ninguém a editou.
+function atualizarTabelaServicos() {
+  const cfg = getConfig();
+  if ((cfg.servicosVersao || 1) >= SERVICOS_VERSAO) return;
+  const atuais = listar('servicos');
+  const intocada = atuais.length === SERVICOS_EXEMPLO_V1.length
+    && atuais.every(s => s._criado === s._atualizado && SERVICOS_EXEMPLO_V1.some(([nome, preco]) => nome === s.nome && +s.preco === preco));
+  transacao(() => {
+    if (intocada) {
+      atuais.forEach(s => remover('servicos', s.id));
+      SERVICOS.forEach((s, i) => criar('servicos', { ...s, ordem: i }));
+      console.log('[seed] tabela de honorários atualizada para a versão', SERVICOS_VERSAO);
+    }
+    atualizar('config', 'principal', { servicosVersao: SERVICOS_VERSAO });
+  });
+}
+
 // ---------- seed ----------
 export function seed() {
   const n = db.prepare('SELECT COUNT(*) AS n FROM users').get().n;
@@ -147,7 +164,8 @@ export function seed() {
   }
   completarConfig();
   if (!listar('mensagens').length) transacao(() => MENSAGENS.forEach(m => criar('mensagens', m)));
-  if (!listar('servicos').length) transacao(() => SERVICOS.forEach(s => criar('servicos', s)));
+  if (!listar('servicos').length) transacao(() => SERVICOS.forEach((s, i) => criar('servicos', { ...s, ordem: i })));
+  atualizarTabelaServicos();
   if (!listar('posts').length) {
     const hoje = new Date();
     transacao(() => POSTS_IDEIAS.forEach((p, i) => {

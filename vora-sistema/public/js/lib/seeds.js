@@ -39,17 +39,30 @@ export const MENSAGENS = [
   { codigo: '12.2.4', categoria: 'Vigilância', titulo: 'Declínio de oposição (registro)', texto: `{{nome}}, conforme conversamos, registramos que você *optou por não apresentar oposição* contra a marca *{{marca_terceiro}}* (processo {{processo_terceiro}}), publicada na RPI nº {{rpi}}.\n\nSegue o Termo de Declínio para sua assinatura. Seguimos monitorando a sua marca *{{marca}}* normalmente. Equipe Vora` },
 ];
 
+// Tabela de honorários (pesquisa de mercado nov/2026: assessorias online, OAB-AL/BA/PE/SP/RS 2026 e tabela de retribuições do INPI).
+// preco = 1ª classe/processo · adicional = 2ª · aPartir3 = cada classe a partir da 3ª · taxaInpi/taxaInpiDesc = GRU por classe (sem/com 50% de desconto).
+export const SERVICOS_VERSAO = 2;
 export const SERVICOS = [
-  { nome: 'Registro de Marca (1ª classe)', categoria: 'Registro', preco: 1490, adicional: 990, descontoProgressivo: 10, inclui: 'Busca de viabilidade detalhada + depósito + acompanhamento processual + vigilância semanal até o julgamento', recorrente: false },
-  { nome: 'Oposição a pedido de registro', categoria: 'Contencioso', preco: 1800, adicional: 0, descontoCliente: 15, recorrente: false },
-  { nome: 'Manifestação à oposição', categoria: 'Contencioso', preco: 1800, adicional: 0, descontoCliente: 15, recorrente: false },
-  { nome: 'Recurso contra indeferimento', categoria: 'Contencioso', preco: 2200, adicional: 0, descontoCliente: 15, recorrente: false },
-  { nome: 'Nulidade de registro (PAN)', categoria: 'Contencioso', preco: 3500, adicional: 0, descontoCliente: 10, recorrente: false },
-  { nome: 'Caducidade de registro', categoria: 'Contencioso', preco: 2500, adicional: 0, descontoCliente: 10, recorrente: false },
-  { nome: 'Monitoramento de Marca — mensal', categoria: 'Recorrente', preco: 89, adicional: 49, recorrente: 'mensal' },
-  { nome: 'Monitoramento de Marca — anual', categoria: 'Recorrente', preco: 890, adicional: 490, recorrente: 'anual' },
-  { nome: 'Consultoria em marca (hora)', categoria: 'Consultoria', preco: 450, adicional: 0, recorrente: false },
+  { nome: 'Registro de marca', categoria: 'Registro', preco: 1490, adicional: 990, aPartir3: 790, descontoCliente: 0, taxaInpi: 880, taxaInpiDesc: 440,
+    inclui: 'Análise de viabilidade + enquadramento de classes e especificação + validação da logo + depósito no e-Marcas + acompanhamento semanal na RPI até a decisão + cumprimento de exigência formal + vigilância de colidências até o julgamento + envio do certificado', recorrente: false },
+  { nome: 'Oposição contra pedido de terceiro', categoria: 'Contencioso', preco: 1490, adicional: 590, aPartir3: 590, descontoCliente: 15, taxaInpi: 520, taxaInpiDesc: 260, inclui: 'Estudo do caso, peça de oposição, protocolo e acompanhamento até a decisão', recorrente: false },
+  { nome: 'Manifestação à oposição', categoria: 'Contencioso', preco: 1290, adicional: 490, aPartir3: 490, descontoCliente: 15, taxaInpi: 180, taxaInpiDesc: 90, inclui: 'Defesa do pedido do cliente contra oposição de terceiro, protocolo e acompanhamento', recorrente: false },
+  { nome: 'Cumprimento de exigência de mérito', categoria: 'Contencioso', preco: 490, adicional: 290, aPartir3: 290, descontoCliente: 15, taxaInpi: 180, taxaInpiDesc: 90, inclui: 'Análise da exigência, ajuste de especificação/documentos e protocolo', recorrente: false },
+  { nome: 'Recurso contra indeferimento', categoria: 'Contencioso', preco: 1890, adicional: 690, aPartir3: 690, descontoCliente: 15, taxaInpi: 700, taxaInpiDesc: 350, inclui: 'Recurso à Presidência do INPI (art. 212 LPI), protocolo e acompanhamento até a decisão', recorrente: false },
+  { nome: 'Contrarrazões a recurso ou nulidade', categoria: 'Contencioso', preco: 1490, adicional: 490, aPartir3: 490, descontoCliente: 15, taxaInpi: 180, taxaInpiDesc: 90, inclui: 'Defesa do registro/pedido do cliente em grau de recurso ou nulidade', recorrente: false },
+  { nome: 'Pedido de caducidade de registro de terceiro', categoria: 'Contencioso', preco: 1990, adicional: 690, aPartir3: 690, descontoCliente: 10, taxaInpi: 590, taxaInpiDesc: 295, inclui: 'Pesquisa de uso, requerimento (arts. 142/143 LPI), protocolo e acompanhamento', recorrente: false },
+  { nome: 'Defesa em caducidade', categoria: 'Contencioso', preco: 1490, adicional: 490, aPartir3: 490, descontoCliente: 15, taxaInpi: 180, taxaInpiDesc: 90, inclui: 'Organização das provas de uso e manifestação do titular', recorrente: false },
+  { nome: 'Processo Administrativo de Nulidade (PAN)', categoria: 'Contencioso', preco: 2490, adicional: 890, aPartir3: 890, descontoCliente: 10, taxaInpi: 850, taxaInpiDesc: 425, inclui: 'Requerimento de nulidade (art. 168 LPI) em até 180 dias da concessão, protocolo e acompanhamento', recorrente: false },
+  { nome: 'Notificação extrajudicial de uso indevido', categoria: 'Contencioso', preco: 990, adicional: 0, aPartir3: 0, descontoCliente: 15, taxaInpi: 0, taxaInpiDesc: 0, inclui: 'Notificação fundamentada no registro do cliente, com envio e acompanhamento da resposta', recorrente: false },
+  { nome: 'Prorrogação do registro (renovação decenal)', categoria: 'Manutenção', preco: 690, adicional: 390, aPartir3: 390, descontoCliente: 15, taxaInpi: 1000, taxaInpiDesc: 500, inclui: 'Controle do prazo, GRU, protocolo da prorrogação e novo certificado', recorrente: false },
+  { nome: 'Transferência / alteração de titular ou endereço', categoria: 'Manutenção', preco: 490, adicional: 190, aPartir3: 190, descontoCliente: 15, taxaInpi: 170, taxaInpiDesc: 90, inclui: 'Petição de anotação no INPI com os documentos exigidos', recorrente: false },
+  { nome: 'Trâmite prioritário', categoria: 'Manutenção', preco: 390, adicional: 190, aPartir3: 190, descontoCliente: 0, taxaInpi: 890, taxaInpiDesc: 445, inclui: 'Requerimento de exame prioritário (Portaria INPI 27/2025), quando cabível', recorrente: false },
+  { nome: 'Vigilância de marca registrada', categoria: 'Recorrente', preco: 490, adicional: 290, aPartir3: 290, descontoCliente: 0, taxaInpi: 0, taxaInpiDesc: 0, inclui: 'Leitura semanal da RPI, alertas de colidência com prazo de oposição, relatório mensal e controle da prorrogação', recorrente: 'anual' },
+  { nome: 'Consultoria em marca (hora)', categoria: 'Consultoria', preco: 450, adicional: 0, aPartir3: 0, descontoCliente: 0, taxaInpi: 0, taxaInpiDesc: 0, recorrente: false },
 ];
+
+// Tabela anterior (valores de exemplo da implantação) — usada só para trocar automaticamente pela tabela nova se ninguém a editou.
+export const SERVICOS_EXEMPLO_V1 = [['Registro de Marca (1ª classe)', 1490], ['Oposição a pedido de registro', 1800], ['Manifestação à oposição', 1800], ['Recurso contra indeferimento', 2200], ['Nulidade de registro (PAN)', 3500], ['Caducidade de registro', 2500], ['Monitoramento de Marca — mensal', 89], ['Monitoramento de Marca — anual', 890], ['Consultoria em marca (hora)', 450]];
 
 export const CONFIG = {
   empresa: {
