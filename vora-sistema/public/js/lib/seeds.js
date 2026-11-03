@@ -53,18 +53,19 @@ export const SERVICOS = [
 
 export const CONFIG = {
   empresa: {
-    nome: 'Vora Propriedade Industrial',
-    razao: '',
+    nome: 'Vora',
+    razao: 'Vora Assessoria em Propriedade Industrial',
     cnpj: '',
-    enderecoContratual: '',
+    enderecoContratual: 'Av. da Paz, Jaraguá, Maceió/AL',
     enderecoInstitucional: 'Atendimento digital em todo o Brasil · Maceió/AL',
-    whatsapp: '',
-    email: '',
+    whatsapp: '(82) 99996-7696',
+    email: 'contato@vorapi.com.br',
+    instagram: '@vora.marcas',
     site: 'https://vorapi.com.br',
     diretor: 'Caio César Maia Lins',
     diretorQualificacao: 'Sócio-Administrador / Diretor Técnico',
   },
-  linkFormulario: '',
+  linkFormulario: 'https://vorapi.com.br/formulario',
   comissao: {
     faixas: [
       { ate: 4999.99, pct: 15 },

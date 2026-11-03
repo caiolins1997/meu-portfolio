@@ -6,6 +6,7 @@ import { pipeline } from 'node:stream/promises';
 import {
   db, DATA_DIR, UPLOAD_DIR, uid, agora, hashSenha, conferirSenha, listar, obter, criar, atualizar, remover,
   registrarLog, transacao, getConfig, seed,
+  agendarBackup,
 } from './server/db.js';
 import { processarRpi, baixarRpi, extrairXmlDoZip, agendarVigilancia } from './server/rpi.js';
 import { apenasDigitos } from './public/js/lib/texto.js';
@@ -404,4 +405,5 @@ app.use((err, req, res, _next) => {
 
 seed();
 agendarVigilancia();
+agendarBackup();
 app.listen(PORT, () => console.log(`Vora Sistema rodando na porta ${PORT}`));

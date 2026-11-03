@@ -122,6 +122,17 @@ export function getConfig() {
   return obter('config', 'principal') || criar('config', { id: 'principal', ...CONFIG });
 }
 
+// Preenche só os campos da empresa que estiverem vazios (nunca sobrescreve o que foi salvo na tela de Configurações).
+function completarConfig() {
+  const cfg = getConfig();
+  const empresa = { ...(cfg.empresa || {}) };
+  let mudou = false;
+  for (const [k, v] of Object.entries(CONFIG.empresa)) if (v && !empresa[k]) { empresa[k] = v; mudou = true; }
+  const patch = { empresa };
+  if (!cfg.linkFormulario && CONFIG.linkFormulario) { patch.linkFormulario = CONFIG.linkFormulario; mudou = true; }
+  if (mudou) atualizar('config', 'principal', patch);
+}
+
 // ---------- seed ----------
 export function seed() {
   const n = db.prepare('SELECT COUNT(*) AS n FROM users').get().n;
@@ -134,7 +145,7 @@ export function seed() {
     fs.writeFileSync(path.join(DATA_DIR, 'SENHA_INICIAL_ADMIN.txt'), `Usuário: ${email}\nSenha: ${senhaInicial}\nTroque a senha no primeiro acesso.\n`);
     console.log(`[seed] admin criado: ${email} (senha em ${DATA_DIR}/SENHA_INICIAL_ADMIN.txt)`);
   }
-  getConfig();
+  completarConfig();
   if (!listar('mensagens').length) transacao(() => MENSAGENS.forEach(m => criar('mensagens', m)));
   if (!listar('servicos').length) transacao(() => SERVICOS.forEach(s => criar('servicos', s)));
   if (!listar('posts').length) {
@@ -145,4 +156,25 @@ export function seed() {
     }));
   }
   return senhaInicial;
+}
+
+// ---------- cópia de segurança automática ----------
+// Uma cópia consistente do banco por dia em /data/backups (mantém as 14 mais recentes).
+// Os arquivos enviados (uploads) ficam no mesmo volume; para cópia fora da VPS, use o botão de backup em Configurações.
+export const BACKUP_DIR = path.join(DATA_DIR, 'backups');
+export function backupDiario() {
+  fs.mkdirSync(BACKUP_DIR, { recursive: true });
+  const dia = new Date().toLocaleDateString('sv-SE', { timeZone: 'America/Maceio' });
+  const destino = path.join(BACKUP_DIR, `vora-${dia}.db`);
+  if (!fs.existsSync(destino)) {
+    db.exec(`VACUUM INTO '${destino.replace(/'/g, "''")}'`);
+    console.log(`[backup] ${destino}`);
+  }
+  const antigos = fs.readdirSync(BACKUP_DIR).filter(f => /^vora-\d{4}-\d{2}-\d{2}\.db$/.test(f)).sort().reverse().slice(14);
+  for (const f of antigos) fs.rmSync(path.join(BACKUP_DIR, f), { force: true });
+}
+export function agendarBackup() {
+  const tick = () => { try { backupDiario(); } catch (e) { console.error('[backup] falhou:', e.message); } };
+  setTimeout(tick, 60 * 1000);
+  setInterval(tick, 60 * 60 * 1000);
 }
